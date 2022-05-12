@@ -1,0 +1,13 @@
+.heading {
+  color: red;
+}
+
+.heading2 {
+  color: rgb(147, 86, 86);
+}
+.heading3 {
+  color: rgb(219, 156, 156);
+}
+.textUnderline {
+  text-decoration: underline;
+}

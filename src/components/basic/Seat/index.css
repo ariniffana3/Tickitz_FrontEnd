@@ -1,0 +1,50 @@
+.seat__row {
+  flex-wrap: nowrap !important;
+  margin-bottom: 5px;
+}
+
+.seat__col {
+  padding: 0 5px !important;
+}
+
+.seat__list {
+  width: 25px;
+  height: 25px;
+  border-radius: 25%;
+  cursor: pointer;
+}
+
+.seat__list:hover {
+  width: 25px;
+  height: 25px;
+}
+
+.seat__list--available {
+  background-color: #d6d8e7;
+}
+
+.seat__list--selected {
+  background-color: #5f2eea;
+}
+
+.seat__list--sold {
+  background-color: #6e7191;
+}
+
+@media (max-width: 575.98px) {
+  .seat__row {
+    margin-bottom: 5px;
+  }
+  .seat__col--text {
+    font-size: 10px;
+  }
+  .seat__list {
+    width: 10px;
+    height: 10px;
+    border-radius: 15%;
+  }
+  .seat__list:hover {
+    width: 15px;
+    height: 15px;
+  }
+}
