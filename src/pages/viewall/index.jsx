@@ -186,17 +186,21 @@ function Home() {
                 <span className="visually-hidden">Loading...</span>
               </div>
             ) : (
-              movie.data.map((item) => (
-                <li key={item.id}>
-                  {/* <span>{JSON.stringify(item)}</span> */}
-                  <CardDown
-                    data={item}
-                    handleDetail={handleDetailMovie}
-                    // dataUser={dataUser}
-                    // month={newData}
-                  />
-                </li>
-              ))
+              <div className="row">
+                {movie.data.map((item) => (
+                  <div className="col-md-4">
+                    <li key={item.id}>
+                      {/* <span>{JSON.stringify(item)}</span> */}
+                      <CardDown
+                        data={item}
+                        handleDetail={handleDetailMovie}
+                        // dataUser={dataUser}
+                        // month={newData}
+                      />
+                    </li>
+                  </div>
+                ))}
+              </div>
             )}
           </ul>
           <Pagination
