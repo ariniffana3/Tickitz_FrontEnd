@@ -41,7 +41,7 @@ export default function Detail() {
   const token = localStorage.getItem("token");
   const getMovieId = async () => {
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const resultMovieId = await axios.get(`movie/${state.id}`);
       setData(resultMovieId.data.data[0]);
       // setDataRilis(data.releaseDate);
@@ -53,7 +53,7 @@ export default function Detail() {
 
   const getdataSchedule = async () => {
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const resultSchedule = await axios.get(
         `/schedule?page=1&limit=6&searchMovieId=${state.id}&searchLocation=${location}&sort=`
       );
@@ -75,11 +75,11 @@ export default function Detail() {
   });
 
   const handleOrder = () => {
-    // navigate("/order", {
-    //   state: {
-    //     ...dataOrder,
-    //   },
-    // });
+    navigate("/order", {
+      state: {
+        ...dataOrder,
+      },
+    });
     console.log("handle order");
   };
   const changeDataOrder = (data) => {

@@ -5,7 +5,7 @@ import CardDown from "../../components/CardDown/CardDown";
 import Pagination from "react-paginate";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  getDataMovie,
+  getDataSchedule,
   postMovie,
   updateMovie,
   deleteMovie,
@@ -127,7 +127,7 @@ function Home() {
   };
   const handleDelete = (id) => {
     dispatch(deleteMovie(id));
-    dispatch(getDataMovie(page, limit));
+    dispatch(getDataSchedule(page, limit));
     resetForm();
     console.log(id);
   };
@@ -147,7 +147,7 @@ function Home() {
     formData.append("name", form.name);
     // axios.patch("...", formData)
     dispatch(updateMovie(idMovie, formData));
-    dispatch(getDataMovie(page, limit));
+    dispatch(getDataSchedule(page, limit));
     setIsUpdate(false);
   };
   const handlePagination = (data) => {
@@ -373,7 +373,7 @@ function Home() {
                 Synopsis
               </label>
               <input
-                type="textarea"
+                type="text-area"
                 id="synopsis"
                 className={`form-control ${styles.form__control}`}
                 placeholder="Synopsis"

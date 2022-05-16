@@ -58,7 +58,7 @@ function Home() {
       //   console.log(limit);
       //   console.log(page);
       // Proses
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const resultMovie = await axios.get(
         `movie?page=${page}&limit=${limit}&searchRelease=${releaseDate.date}`
       );
@@ -77,7 +77,7 @@ function Home() {
       //   console.log(limit);
       //   console.log(page);
       // Proses
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const resultMovie = await axios.get(
         `movie?page=${page}&limit=${limit}&searchRelease=${releaseDate.date}`
       );

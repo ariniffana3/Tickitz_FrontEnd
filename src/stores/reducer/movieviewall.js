@@ -37,6 +37,33 @@ const movie = (state = initialState, action) => {
         msg: action.payload.response.data.msg,
       };
     }
+    case "POST_MOVIE_PENDING": {
+      //   console.log(action.data);
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+      };
+    }
+    case "POST_MOVIE_FULFILLED": {
+      //   console.log(action.data);
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+      };
+    }
+    case "POST_MOVIE_REJECT": {
+      //   console.log(action.data);
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+        data: [],
+        pageInfo: {},
+        msg: action.payload.response.data.msg,
+      };
+    }
     default: {
       return state;
     }

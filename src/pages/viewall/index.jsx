@@ -188,7 +188,7 @@ function Home() {
             ) : (
               <div className="row">
                 {movie.data.map((item) => (
-                  <div className="col-md-4">
+                  <div className="col-md-3">
                     <li key={item.id}>
                       {/* <span>{JSON.stringify(item)}</span> */}
                       <CardDown

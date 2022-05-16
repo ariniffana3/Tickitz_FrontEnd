@@ -13,23 +13,33 @@ import Payment from "./pages/payment/index";
 import ViewAll from "./pages/viewall/index";
 import ManageMovie from "./pages/managemovie";
 
+import PrivateRoute from "./helpers/route/privateRoute";
+import PublicRoute from "./helpers/route/publicRoute";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="basic/counter" element={<BasicCounter />} />
+
         <Route path="basic/react" element={<BasicReact />} />
         <Route path="basic/login" element={<BasicLogin />} />
         <Route path="basic/home" element={<BasicHome />} />
         <Route path="basic/order" element={<BasicOrder />} />
         <Route path="signup" element={<SignUp />} />
-        <Route path="signin" element={<SignIn />} />
-        <Route path="home" element={<Home />} />
-        <Route path="detail" element={<Detail />} />
-        <Route path="order" element={<Order />} />
-        <Route path="payment" element={<Payment />} />
-        <Route path="viewall" element={<ViewAll />} />
-        <Route path="managemovie" element={<ManageMovie />} />
+        <Route element={<PublicRoute restricted={true} />}>
+          <Route path="signin" element={<SignIn />} />
+        </Route>
+        <Route element={<PrivateRoute isAdmin={false} />}>
+          <Route path="home" element={<Home />} />
+          <Route path="detail" element={<Detail />} />
+          <Route path="order" element={<Order />} />
+          <Route path="payment" element={<Payment />} />
+          <Route path="viewall" element={<ViewAll />} />
+        </Route>
+        <Route element={<PrivateRoute isAdmin={true} />}>
+          <Route path="managemovie" element={<ManageMovie />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
