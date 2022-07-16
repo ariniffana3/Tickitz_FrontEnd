@@ -52,9 +52,9 @@ function Payment() {
     }
   };
 
-  const handleOrder =()=>{
-    await axios.
-  }
+  const handleOrder = () => {
+    // await axios.
+  };
 
   console.log(dataUser);
 

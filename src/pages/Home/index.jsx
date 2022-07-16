@@ -102,6 +102,9 @@ function Home() {
     // navigate(`/basic/detail/${id}`);
     // console.log(id);
   };
+  const handleViewAll = () => {
+    navigate("/viewall");
+  };
   // const showMenu = () => {
   //   let display = document.getElementById("header__menu");
   //   let header = document.getElementById("header");
@@ -214,7 +217,10 @@ function Home() {
           </div>
 
           <p>
-            <a href=""> view all</a>
+            <a href="" onClick={handleViewAll}>
+              {" "}
+              view all
+            </a>
           </p>
         </div>
         <div className={styles.main1__img__container__hover}>
@@ -242,7 +248,10 @@ function Home() {
             <div className={styles.main1__title__p1__line}></div>
           </div>
           <p>
-            <a href=""> view all</a>
+            <a href="" onClick={handleViewAll}>
+              {" "}
+              view all
+            </a>
           </p>
         </div>
         <div className={styles.main1__month__container}>
