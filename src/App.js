@@ -12,6 +12,7 @@ import Order from "./pages/order/index";
 import Payment from "./pages/payment/index";
 import ViewAll from "./pages/viewall/index";
 import ManageMovie from "./pages/managemovie";
+import Profile from "./pages/profile";
 
 import PrivateRoute from "./helpers/route/privateRoute";
 import PublicRoute from "./helpers/route/publicRoute";
@@ -31,11 +32,12 @@ function App() {
           <Route path="signin" element={<SignIn />} />
         </Route>
         <Route element={<PrivateRoute isAdmin={false} />}>
-          <Route path="home" element={<Home />} />
+          <Route path="" element={<Home />} />
           <Route path="detail" element={<Detail />} />
           <Route path="order" element={<Order />} />
           <Route path="payment" element={<Payment />} />
           <Route path="viewall" element={<ViewAll />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<PrivateRoute isAdmin={true} />}>
           <Route path="managemovie" element={<ManageMovie />} />
