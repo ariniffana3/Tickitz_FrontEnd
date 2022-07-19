@@ -1,10 +1,39 @@
 import React from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { dataUser } from "../../stores/actions/user";
 import styles from "./index.module.css";
-
+import axios from "../../utils/axios";
 function Profile() {
-  const handleUpdateProfile = () => {};
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.user.data);
+  // console.log(data);
+
+  useEffect(() => {
+    getDataUser();
+  }, []);
+
+  const getDataUser = async () => {
+    try {
+      let id = localStorage.getItem("dataUser");
+      id = JSON.parse(id).id;
+      // console.log(id);
+      const result = await dispatch(dataUser(id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    try {
+      const result = await axios.patch("user/");
+    } catch (error) {
+      console.log(error);
+      alert("error");
+    }
+  };
   const handleUpdatePassword = () => {};
 
   return (
@@ -14,12 +43,16 @@ function Profile() {
         <div className={styles.main__left}>
           <div className={styles.image__container}>
             <img
-              src="/img/signUp/tickitz 1.png"
+              src={
+                data
+                  ? `${process.env.REACT_APP_CLOUDINARY}${data.image}`
+                  : "https://www.a1hosting.net/wp-content/themes/arkahost/assets/images/default.jpg"
+              }
               alt=""
               className={styles.image}
             />
           </div>
-          <p>Name Here</p>
+          <p>{`${data.firstName} ${data.lastName}`}</p>
           <button>Update Image</button>
         </div>
         <div className={styles.main__right}>
@@ -39,6 +72,7 @@ function Profile() {
                     type="text"
                     name="firstName"
                     id="firstName"
+                    value={data.firstName}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -47,6 +81,7 @@ function Profile() {
                     type="email"
                     name="email"
                     id="email"
+                    value={data.email}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -57,6 +92,7 @@ function Profile() {
                     type="text"
                     name="lastName"
                     id="lastName"
+                    value={data.lastName}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -65,6 +101,7 @@ function Profile() {
                     type="tel"
                     name="noTelp"
                     id="noTelp"
+                    value={data.noTelp}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
