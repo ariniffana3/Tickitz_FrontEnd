@@ -62,11 +62,14 @@ function Profile() {
     }
   };
 
-  const handleAccount = async (text, name) => {
-    await setForm({ ...form, [name]: text });
+  const handleAccount = async (event) => {
+    await setForm({ ...form, [event.target.name]: event.target.value });
   };
-  const handlePassword = async (text, name) => {
-    await setFormPassword({ ...formPassword, [name]: text });
+  const handlePassword = async (event) => {
+    await setFormPassword({
+      ...formPassword,
+      [event.target.name]: event.target.value,
+    });
   };
   const handleTicket = (data) => {
     navigate("/Ticket");
@@ -109,6 +112,7 @@ function Profile() {
                     name="firstName"
                     id="firstName"
                     value={data.firstName}
+                    onChange={handleAccount}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -118,6 +122,7 @@ function Profile() {
                     name="email"
                     id="email"
                     value={data.email}
+                    onChange={handleAccount}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -129,6 +134,7 @@ function Profile() {
                     name="lastName"
                     id="lastName"
                     value={data.lastName}
+                    onChange={handleAccount}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -138,6 +144,7 @@ function Profile() {
                     name="noTelp"
                     id="noTelp"
                     value={data.noTelp}
+                    onChange={handleAccount}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -158,6 +165,7 @@ function Profile() {
                     type="password"
                     name="newPassword"
                     id="newPassword"
+                    onChange={handlePassword}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
@@ -166,8 +174,9 @@ function Profile() {
                   <label for="confirm">Confirm</label>
                   <input
                     type="password"
-                    name="confirm"
+                    name="confirmPassword"
                     id="confirm"
+                    onChange={handlePassword}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
