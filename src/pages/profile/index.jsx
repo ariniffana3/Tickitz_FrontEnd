@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "../../components/Footer";
@@ -6,35 +6,71 @@ import Header from "../../components/Header";
 import { dataUser } from "../../stores/actions/user";
 import styles from "./index.module.css";
 import axios from "../../utils/axios";
+import { useNavigate } from "react-router-dom";
+
 function Profile() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isHistory, setIsHistory] = useState(false);
+  const [dataHistory, setDatahistory] = useState([]);
   const data = useSelector((state) => state.user.data);
-  // console.log(data);
+  const [form, setForm] = useState({ ...dataUser });
+  const [formPassword, setFormPassword] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   useEffect(() => {
-    getDataUser();
+    getdataUser();
   }, []);
 
-  const getDataUser = async () => {
+  const getdataUser = async () => {
+    try {
+      console.log("get data user id");
+      let id = localStorage.getItem("dataUser");
+      id = JSON.parse(id).id;
+      const result = await dispatch(dataUser(id));
+      console.log("result", result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateProfile = async (event) => {
     try {
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
-      // console.log(id);
-      const result = await dispatch(dataUser(id));
+      const result = await axios.patch(`user/profile/${id}`, form);
+      await getdataUser();
+      alert("Success Update");
     } catch (error) {
       console.log(error);
+      alert("Failed to Update");
     }
   };
 
-  const handleUpdateProfile = async () => {
+  const handleUpdatePassword = async (event) => {
     try {
-      const result = await axios.patch("user/");
+      console.log(formPassword);
+      let id = localStorage.getItem("dataUser");
+      id = JSON.parse(id).id;
+      const result = await axios.patch(`user/password/${id}`, formPassword);
+      alert("Password Updated");
     } catch (error) {
-      console.log(error);
-      alert("error");
+      console.log(error.response.data.msg);
+      alert(`Failed to Update Password ${error.response.data.msg}`);
     }
   };
-  const handleUpdatePassword = () => {};
+
+  const handleAccount = async (text, name) => {
+    await setForm({ ...form, [name]: text });
+  };
+  const handlePassword = async (text, name) => {
+    await setFormPassword({ ...formPassword, [name]: text });
+  };
+  const handleTicket = (data) => {
+    navigate("/Ticket");
+  };
 
   return (
     <div>
