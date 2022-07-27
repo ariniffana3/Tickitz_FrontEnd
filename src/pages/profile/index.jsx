@@ -14,7 +14,7 @@ function Profile() {
   const [isHistory, setIsHistory] = useState(false);
   const [dataHistory, setDatahistory] = useState([]);
   const data = useSelector((state) => state.user.data);
-  const [form, setForm] = useState({ ...dataUser });
+  const [form, setForm] = useState({ ...data });
   const [formPassword, setFormPassword] = useState({
     newPassword: "",
     confirmPassword: "",
@@ -36,11 +36,12 @@ function Profile() {
     }
   };
 
-  const handleUpdateProfile = async (event) => {
+  const handleUpdateProfile = async (e) => {
     try {
+      e.preventDefault();
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
-      const result = await axios.patch(`user/profile/${id}`, form);
+      await axios.patch(`user/profile/${id}`, form);
       await getdataUser();
       alert("Success Update");
     } catch (error) {
@@ -49,8 +50,9 @@ function Profile() {
     }
   };
 
-  const handleUpdatePassword = async (event) => {
+  const handleUpdatePassword = async (e) => {
     try {
+      e.preventDefault();
       console.log(formPassword);
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
@@ -103,7 +105,7 @@ function Profile() {
             <p>Details Information</p>
             <hr />
             <br />
-            <form onSumbit={handleUpdateProfile}>
+            <form>
               <div className={styles.main__profile__form}>
                 <div className={styles.main__profile__1}>
                   <label for="firstName">First Name</label>
@@ -111,7 +113,7 @@ function Profile() {
                     type="text"
                     name="firstName"
                     id="firstName"
-                    value={data.firstName}
+                    value={form.firstName}
                     onChange={handleAccount}
                     className={`form-control ${styles.form__control}`}
                     required
@@ -121,10 +123,11 @@ function Profile() {
                     type="email"
                     name="email"
                     id="email"
-                    value={data.email}
+                    value={form.email}
                     onChange={handleAccount}
                     className={`form-control ${styles.form__control}`}
                     required
+                    disabled
                   />
                 </div>
                 <div className={styles.main__profile__2}>
@@ -133,24 +136,27 @@ function Profile() {
                     type="text"
                     name="lastName"
                     id="lastName"
-                    value={data.lastName}
+                    value={form.lastName}
                     onChange={handleAccount}
                     className={`form-control ${styles.form__control}`}
                     required
                   />
                   <label for="noTelp">Telephone</label>
-                  <input
-                    type="tel"
-                    name="noTelp"
-                    id="noTelp"
-                    value={data.noTelp}
-                    onChange={handleAccount}
-                    className={`form-control ${styles.form__control}`}
-                    required
-                  />
+                  <div className={`input-group-text ${styles.group__text}`}>
+                    <div className={styles.group__text__first}>{` +62 `}</div>
+                    <input
+                      type="tel"
+                      name="noTelp"
+                      id="noTelp"
+                      value={form.noTelp}
+                      onChange={handleAccount}
+                      className={`form-control ${styles.form__control__telp}`}
+                      required
+                    />
+                  </div>
                 </div>
               </div>
-              <button type="submit">Update</button>
+              <button onClick={handleUpdateProfile}>Update</button>
             </form>
           </div>
           <div className={styles.main__password}>
@@ -182,8 +188,7 @@ function Profile() {
                   />
                 </div>
               </div>
-
-              <button type="submit">Update</button>
+              <button onClick={handleUpdatePassword}>Update</button>
             </form>
           </div>
         </div>

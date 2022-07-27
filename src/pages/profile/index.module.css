@@ -69,7 +69,21 @@
 .form__control {
   margin-bottom: 10px;
 }
+.form__control__telp {
+  margin: 0;
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
 .image {
   width: 150px;
   /* max-height: 150px; */
+}
+.group__text {
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: white !important;
+}
+.group__text__first {
+  padding-left: 5px;
+  padding-right: 5px;
 }
