@@ -1,27 +1,31 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import { dataUser } from "../../stores/actions/user";
 import styles from "./index.module.css";
 import axios from "../../utils/axios";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import OrderHistory from "../../components/OrderHistory";
+import { dataUser } from "../../stores/actions/user";
+
 import { useNavigate } from "react-router-dom";
 
-function Profile() {
+function Profile(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isHistory, setIsHistory] = useState(false);
-  const [dataHistory, setDatahistory] = useState([]);
+  const [dataHistory, setDataHistory] = useState([]);
   const data = useSelector((state) => state.user.data);
   const [form, setForm] = useState({ ...data });
   const [formPassword, setFormPassword] = useState({
     newPassword: "",
     confirmPassword: "",
   });
+  const [formImage, setFormImage] = useState({});
 
   useEffect(() => {
     getdataUser();
+    getDataHistory();
   }, []);
 
   const getdataUser = async () => {
@@ -35,7 +39,27 @@ function Profile() {
       console.log(error);
     }
   };
+  const getDataHistory = async () => {
+    try {
+      let id = localStorage.getItem("dataUser");
+      id = JSON.parse(id).id;
+      const result = await axios.get(`booking/user/${id}`);
+      console.log(result);
+      // setDataHistory(result.data)
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
+  const handleAccount = async (event) => {
+    await setForm({ ...form, [event.target.name]: event.target.value });
+  };
+  const handlePassword = async (event) => {
+    await setFormPassword({
+      ...formPassword,
+      [event.target.name]: event.target.value,
+    });
+  };
   const handleUpdateProfile = async (e) => {
     try {
       e.preventDefault();
@@ -49,7 +73,6 @@ function Profile() {
       alert("Failed to Update");
     }
   };
-
   const handleUpdatePassword = async (e) => {
     try {
       e.preventDefault();
@@ -64,15 +87,41 @@ function Profile() {
     }
   };
 
-  const handleAccount = async (event) => {
-    await setForm({ ...form, [event.target.name]: event.target.value });
+  // Create a reference to the hidden file input element
+  const hiddenFileInput = React.useRef(null);
+
+  // Programatically click the hidden file input element
+  // when the Button component is clicked
+  const handleClickUpdateImage = (event) => {
+    hiddenFileInput.current.click();
   };
-  const handlePassword = async (event) => {
-    await setFormPassword({
-      ...formPassword,
-      [event.target.name]: event.target.value,
-    });
+  // Call a function (passed as a prop from the parent component)
+  // to handle the user-selected file
+  const handleChangeImage = async (event) => {
+    try {
+      console.log("handle change image berjalan");
+      const formImage = { image: event.target.files[0] };
+      // const fileUploaded = event.target.files[0];
+      // props.handleFile(fileUploaded);
+      console.log("set form image diperbaharui");
+      const formData = new FormData();
+      for (const data in formImage) {
+        formData.append(data, formImage[data]);
+      }
+      console.log(formData);
+      let id = localStorage.getItem("dataUser");
+      id = JSON.parse(id).id;
+      const result = await axios.patch(`user/image/${id}`, formData);
+      console.log("image updated");
+      await getdataUser();
+      alert("Update Image Success");
+      // await setFormImage({});
+    } catch (error) {
+      console.log(error.response.data.msg);
+      alert(`Update Image Failed ${error.response.data.msg}`);
+    }
   };
+
   const handleTicket = (data) => {
     navigate("/Ticket");
   };
@@ -94,103 +143,131 @@ function Profile() {
             />
           </div>
           <p>{`${data.firstName} ${data.lastName}`}</p>
-          <button>Update Image</button>
+          <input
+            type="file"
+            ref={hiddenFileInput}
+            onChange={handleChangeImage}
+            style={{ display: "none" }}
+          />
+          <button onClick={handleClickUpdateImage}>Update Image</button>
         </div>
         <div className={styles.main__right}>
           <div className={styles.main__menu}>
-            <p>Account</p>
-            <p>History</p>
+            <p
+              onClick={() => setIsHistory(false)}
+              className={isHistory ? styles.p : styles.main__menu__outline}
+            >
+              Account
+            </p>
+            <p
+              onClick={() => setIsHistory(true)}
+              className={isHistory ? styles.main__menu__outline : styles.p}
+            >
+              History
+            </p>
           </div>
-          <div className={styles.main__profile}>
-            <p>Details Information</p>
-            <hr />
-            <br />
-            <form>
-              <div className={styles.main__profile__form}>
-                <div className={styles.main__profile__1}>
-                  <label for="firstName">First Name</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    id="firstName"
-                    value={form.firstName}
-                    onChange={handleAccount}
-                    className={`form-control ${styles.form__control}`}
-                    required
-                  />
-                  <label for="email">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value={form.email}
-                    onChange={handleAccount}
-                    className={`form-control ${styles.form__control}`}
-                    required
-                    disabled
-                  />
-                </div>
-                <div className={styles.main__profile__2}>
-                  <label for="lastName">Last Name</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    id="lastName"
-                    value={form.lastName}
-                    onChange={handleAccount}
-                    className={`form-control ${styles.form__control}`}
-                    required
-                  />
-                  <label for="noTelp">Telephone</label>
-                  <div className={`input-group-text ${styles.group__text}`}>
-                    <div className={styles.group__text__first}>{` +62 `}</div>
-                    <input
-                      type="tel"
-                      name="noTelp"
-                      id="noTelp"
-                      value={form.noTelp}
-                      onChange={handleAccount}
-                      className={`form-control ${styles.form__control__telp}`}
-                      required
-                    />
+          {isHistory ? (
+            <div>
+              {dataHistory.map((item) => (
+                <OrderHistory data={item} handleTicket={handleTicket} />
+              ))}
+            </div>
+          ) : (
+            <div>
+              <div className={styles.main__profile}>
+                <p>Details Information</p>
+                <hr />
+                <br />
+                <form>
+                  <div className={styles.main__profile__form}>
+                    <div className={styles.main__profile__1}>
+                      <label for="firstName">First Name</label>
+                      <input
+                        type="text"
+                        name="firstName"
+                        id="firstName"
+                        value={form.firstName}
+                        onChange={handleAccount}
+                        className={`form-control ${styles.form__control}`}
+                        required
+                      />
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={form.email}
+                        onChange={handleAccount}
+                        className={`form-control ${styles.form__control}`}
+                        required
+                        disabled
+                      />
+                    </div>
+                    <div className={styles.main__profile__2}>
+                      <label for="lastName">Last Name</label>
+                      <input
+                        type="text"
+                        name="lastName"
+                        id="lastName"
+                        value={form.lastName}
+                        onChange={handleAccount}
+                        className={`form-control ${styles.form__control}`}
+                        required
+                      />
+                      <label for="noTelp">Telephone</label>
+                      <div className={`input-group-text ${styles.group__text}`}>
+                        <div
+                          className={styles.group__text__first}
+                        >{` +62 `}</div>
+                        <input
+                          type="tel"
+                          name="noTelp"
+                          id="noTelp"
+                          value={form.noTelp}
+                          onChange={handleAccount}
+                          className={`form-control ${styles.form__control__telp}`}
+                          required
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                  <button onClick={handleUpdateProfile}>Update</button>
+                </form>
               </div>
-              <button onClick={handleUpdateProfile}>Update</button>
-            </form>
-          </div>
-          <div className={styles.main__password}>
-            <p>Account And Privacy</p>
-            <hr />
-            <br />
-            <form onSumbit={handleUpdatePassword}>
-              <div className={styles.main__profile__form}>
-                <div className={styles.main__profile__1}>
-                  <label for="newPassword">New Password</label>
-                  <input
-                    type="password"
-                    name="newPassword"
-                    id="newPassword"
-                    onChange={handlePassword}
-                    className={`form-control ${styles.form__control}`}
-                    required
-                  />
-                </div>
-                <div className={styles.main__profile__2}>
-                  <label for="confirm">Confirm</label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    id="confirm"
-                    onChange={handlePassword}
-                    className={`form-control ${styles.form__control}`}
-                    required
-                  />
-                </div>
+              <div className={styles.main__password}>
+                <p>Account And Privacy</p>
+                <hr />
+                <br />
+                <form onSumbit={handleUpdatePassword}>
+                  <div className={styles.main__profile__form}>
+                    <div className={styles.main__profile__1}>
+                      <label for="newPassword">New Password</label>
+                      <input
+                        type="password"
+                        name="newPassword"
+                        id="newPassword"
+                        onChange={handlePassword}
+                        className={`form-control ${styles.form__control}`}
+                        required
+                      />
+                    </div>
+                    <div className={styles.main__profile__2}>
+                      <label for="confirm">Confirm</label>
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        id="confirm"
+                        onChange={handlePassword}
+                        className={`form-control ${styles.form__control}`}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <button onClick={handleUpdatePassword}>Update</button>
+                </form>
               </div>
-              <button onClick={handleUpdatePassword}>Update</button>
-            </form>
-          </div>
+            </div>
+          )}
         </div>
       </div>
       <Footer />

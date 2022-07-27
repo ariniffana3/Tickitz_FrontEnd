@@ -5,7 +5,7 @@ import CardDown from "../../components/CardDown/CardDown";
 import Pagination from "react-paginate";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  getDataSchedule,
+  // getDataSchedule,
   postMovie,
   updateMovie,
   deleteMovie,
@@ -63,9 +63,8 @@ function Home() {
     try {
       // panggil action
 
-      await dispatch(
-        getDataMovie(token, page, limit, sort, dataRelease, search)
-      );
+      await dispatch();
+      // getDataMovie(token, page, limit, sort, dataRelease, search)
     } catch (error) {
       console.log(error.response);
     }
@@ -92,7 +91,7 @@ function Home() {
       // name, "Bagus"
     }
     dispatch(postMovie(formData));
-    dispatch(getDataMovie(page, limit));
+    // dispatch(getDataMovie(page, limit));
     setImage(null);
   };
   const setUpdate = async (data) => {
@@ -127,7 +126,7 @@ function Home() {
   };
   const handleDelete = (id) => {
     dispatch(deleteMovie(id));
-    dispatch(getDataSchedule(page, limit));
+    // dispatch(getDataSchedule(page, limit));
     resetForm();
     console.log(id);
   };
@@ -147,7 +146,7 @@ function Home() {
     formData.append("name", form.name);
     // axios.patch("...", formData)
     dispatch(updateMovie(idMovie, formData));
-    dispatch(getDataSchedule(page, limit));
+    // dispatch(getDataSchedule(page, limit));
     setIsUpdate(false);
   };
   const handlePagination = (data) => {

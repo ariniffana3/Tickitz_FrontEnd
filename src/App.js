@@ -12,6 +12,7 @@ import Order from "./pages/order/index";
 import Payment from "./pages/payment/index";
 import ViewAll from "./pages/viewall/index";
 import ManageMovie from "./pages/managemovie";
+import ManageSchedule from "./pages/manageschedule";
 import Profile from "./pages/profile";
 
 import PrivateRoute from "./helpers/route/privateRoute";
@@ -41,6 +42,7 @@ function App() {
         </Route>
         <Route element={<PrivateRoute isAdmin={true} />}>
           <Route path="managemovie" element={<ManageMovie />} />
+          <Route path="manageschedule" element={<ManageSchedule />} />
         </Route>
       </Routes>
     </BrowserRouter>
