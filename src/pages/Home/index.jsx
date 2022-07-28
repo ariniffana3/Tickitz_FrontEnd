@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../../utils/axios";
 import CardUp from "../../components/CardUp/CardUp";
 import CardDown from "../../components/CardDown/CardDown";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function Home() {
   document.title = "Home";
@@ -34,9 +36,6 @@ function Home() {
     { number: 11, title: "November" },
     { number: 12, title: "December" },
   ];
-  // setReleaseDate();
-  // console.log(dataRelease);
-
   useEffect(() => {
     getdataMovie();
   }, []);
@@ -53,17 +52,9 @@ function Home() {
 
   const getdataMovie = async () => {
     try {
-      // console.log("GET DATA MOVIE");
-      // Input
-      //   console.log(limit);
-      //   console.log(page);
-      // Proses
-      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const resultMovie = await axios.get(
         `movie?page=${page}&limit=${limit}&searchRelease=${releaseDate.date}`
       );
-      //   console.log(resultMovie);
-      // Output
       setData(resultMovie.data.data);
       setPageInfo(resultMovie.data.pagination);
     } catch (error) {
@@ -72,17 +63,9 @@ function Home() {
   };
   const getdataMovieRelease = async () => {
     try {
-      // console.log("GET DATA MOVIE");
-      // Input
-      //   console.log(limit);
-      //   console.log(page);
-      // Proses
-      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const resultMovie = await axios.get(
         `movie?page=${page}&limit=${limit}&searchRelease=${releaseDate.date}`
       );
-      //   console.log(resultMovie);
-      // Output
       setDataRelease(resultMovie.data.data);
       setPageInfo(resultMovie.data.pagination);
     } catch (error) {
@@ -90,93 +73,15 @@ function Home() {
     }
   };
 
-  const signIn = () => {
-    navigate("/signin");
-  };
   const handleDetailMovie = (id) => {
-    // [1] = search params untuk pagination
-    // navigate(`/basic/detail?id=${id}`);
-    // [2] = state
     navigate("/detail", { state: { userId: dataUser.id, id: id } });
-    // [3]
-    // navigate(`/basic/detail/${id}`);
-    // console.log(id);
   };
   const handleViewAll = () => {
     navigate("/viewall");
   };
-  // const showMenu = () => {
-  //   let display = document.getElementById("header__menu");
-  //   let header = document.getElementById("header");
-  //   if (display.style == {display: "none"}) {
-  //   display.style = {display: "block"};
-  // header.style ={position: "fixed"};
-  // console.log("oke");
-  // }
-  // else
-  // if (display.style === {display: "block"}) {
-  // display.style = {display: "none"};
-  // header.style = {position: "static"};
-  // console.log("okee");
-  // }
-  // console.log("oke");
-  // }
   return (
     <>
-      <header className={styles.header__first}>
-        <div className={styles.header} id="header">
-          <div className={styles.header__left}>
-            <ul className={styles.ul}>
-              <li className={styles.header__li}>
-                <a href="" className={styles.header__li__link}>
-                  <img
-                    src="img/Home/vector tickitz 2.png"
-                    alt="tickitz"
-                    className={styles.header__img}
-                  />
-                </a>
-              </li>
-              <li className={styles.header__li}>
-                <a
-                  href=""
-                  className={`${styles.header__li__link} ${styles.mobile__header__li}`}
-                >
-                  Home
-                </a>
-              </li>
-              <li className={styles.header__li}>
-                <a
-                  href=""
-                  className={`${styles.header__li__link} ${styles.mobile__header__li}`}
-                >
-                  List Movie
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.header__hamburger} onclick="showMenu">
-            <div className={styles.header__hamburger__line}></div>
-            <div className={styles.header__hamburger__line}></div>
-            <div className={styles.header__hamburger__line}></div>
-          </div>
-          <button className={styles.header__button} onClick={signIn}>
-            Sign In
-          </button>
-        </div>
-        <div
-          className={styles.header__menu}
-          id="header__menu"
-          style={{ display: "none" }}
-        >
-          <div className={styles.header__menu__home}>Home</div>
-          <div className={styles.header__menu__listMovie}>List Movie</div>
-          <div className={styles.header__menu__signIn}>Sign In</div>
-          <div className={styles.header__menu__copyright}>
-            © 2020 Tickitz. All Rights Reserved
-          </div>
-          <script></script>
-        </div>
-      </header>
+      <Header />
       <section className={styles.home__section}>
         <div className={styles.section__title}>
           <div className={styles.section__title__container}>
@@ -227,13 +132,7 @@ function Home() {
           <ul>
             {data.map((item) => (
               <li key={item.id}>
-                {/* <span>{JSON.stringify(item)}</span> */}
-                <CardUp
-                  data={item}
-                  handleDetail={handleDetailMovie}
-                  // dataUser={dataUser}
-                  // month={newData}
-                />
+                <CardUp data={item} handleDetail={handleDetailMovie} />
               </li>
             ))}
           </ul>
@@ -278,13 +177,7 @@ function Home() {
           <ul>
             {dataRelease.map((item) => (
               <li key={item.id}>
-                {/* <span>{JSON.stringify(item)}</span> */}
-                <CardDown
-                  data={item}
-                  handleDetail={handleDetailMovie}
-                  // dataUser={dataUser}
-                  // month={newData}
-                />
+                <CardDown data={item} handleDetail={handleDetailMovie} />
               </li>
             ))}
           </ul>
@@ -309,64 +202,7 @@ function Home() {
             will always send you the latest updates via email.
           </p>
         </div>
-        <div className={styles.footer__ending}>
-          <div className={styles.footer__ending__tickitz}>
-            <img src="img/Home/vector tickitz 2.png" alt="" />
-            <p>
-              Stop waiting in line. Buy tickets <br />
-              conveniently, watch movies quietly.
-            </p>
-          </div>
-          <div className={styles.footer__ending__explore}>
-            <h3>Explore</h3>
-            <div className={styles.footer__ending__explore__list}>
-              <a href="" className={styles.footer__ending__explore__list__1}>
-                <p>Home</p>
-              </a>
-              <a href="" className={styles.footer__ending__explore__list__2}>
-                <p>List Movie</p>
-              </a>
-            </div>
-          </div>
-          <div className={styles.footer__ending__sponsor}>
-            <h3>Our Sponsor</h3>
-            <div className={styles.footer__ending__sponsor__list}>
-              <div>
-                <img src="img/Home/Vector.png" alt="" />
-              </div>
-              <div>
-                <img src="img/Home/Vector-1.png" alt="" />
-              </div>
-              <div>
-                <img src="img/Home/Vector-2.png" alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={styles.footer__ending__socialMedia}>
-            <h3>Follow us</h3>
-            <div className={styles.footer__ending__socialMedia__list}>
-              <div>
-                <img src="img/Home/Vector-3.png" alt="" />
-                <a href=""> Tickitz Cinema id</a>
-              </div>
-              <div>
-                <img src="img/Home/bx_bxl-instagram.png" alt="" />
-                <a href="">tickitz.id</a>
-              </div>
-              <div>
-                <img src="img/Home/Vector-6.png" alt="" />
-                <a href=""> tickitz.id</a>
-              </div>
-              <div>
-                <img src="img/Home/Group.png" alt="" />
-                <a href="">Tickitz Cinema id</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={styles.footer__copyright}>
-          © 2020 Tickitz. All Rights Reserved
-        </div>
+        <Footer />
       </footer>
     </>
   );

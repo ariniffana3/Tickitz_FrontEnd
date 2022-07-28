@@ -327,7 +327,7 @@ button {
 }
 
 .footer__subscription {
-  margin: 138px auto;
+  margin: 0 auto 50px;
   height: 372px;
   width: 80%;
   text-align: center;

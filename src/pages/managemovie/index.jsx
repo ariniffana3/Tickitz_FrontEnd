@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CardDown from "../../components/CardDown/CardDown";
 import Pagination from "react-paginate";
 import { useSelector, useDispatch } from "react-redux";
@@ -44,6 +44,7 @@ function Home() {
 
   const getdataMovie = async () => {
     try {
+      console.log("jalan");
       await dispatch(
         getDataMovie(token, page, limit, sort, dataRelease, search)
       );
@@ -54,29 +55,31 @@ function Home() {
 
   const setUpdate = async (data) => {
     console.log(data);
+    const durationHour = data.duration.split("h")[0];
+    const durationMinute = data.duration.split("h")[1].split("m")[0];
     setForm({
       ...form,
-      movieName: data.name,
+      name: data.name,
       category: data.category,
       image: data.image,
-      releaseDate: moment(data.releaseDate).format("L"),
+      releaseDate: moment(data.releaseDate).format("YYYY-MM-DD"),
       casts: data.casts,
       director: data.director,
-      durationHour: data.duration,
-      durationMinute: data.duration,
+      durationHour: durationHour,
+      durationMinute: durationMinute,
       synopsis: data.synopsis,
     });
     setIdMovie(data.id);
     setIsUpdate(true);
   };
-  const handleChangeForm = (event) => {
+  const handleChangeForm = async (event) => {
     event.preventDefault();
     const { name, value, files } = event.target;
     if (name === "image") {
-      setForm({ ...form, [name]: files[0] });
-      setImage(URL.createObjectURL(files[0]));
+      await setForm({ ...form, [name]: files[0] });
+      await setImage(URL.createObjectURL(files[0]));
     } else {
-      setForm({ ...form, [name]: value });
+      await setForm({ ...form, [name]: value });
     }
   };
 
@@ -85,83 +88,92 @@ function Home() {
     event.preventDefault();
     hiddenFileInput.current.click();
   };
-  // const handleChangeImage = async (event) => {
-  //   try {
-  //     console.log("first");
-  //     const { name, value, files } = event.target;
-  //     if (name === "image") {
-  //       setForm({ ...form, [name]: files[0] });
-  //       setImage(URL.createObjectURL(files[0]));
-  //     } else {
-  //       setForm({ ...form, [name]: value });
-  //     }
-  //     // const formImage = { image: event.target.files[0] };
-  //     // const formData = new FormData();
-  //     // for (const data in formImage) {
-  //     //   formData.append(data, formImage[data]);
-  //     // }
-  //   } catch (error) {
-  //     console.log(error.response.data.msg);
-  //     alert(`Update Image Failed ${error.response.data.msg}`);
-  //   }
-  // };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
-    const formData = new FormData();
-    for (const data in form) {
-      formData.append(data, form[data]);
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const newForm = {
+        ...form,
+        duration: `${form.durationHour}h ${form.durationMinute}m`,
+      };
+      console.log(form.casts);
+      console.log(newForm);
+      const formData = new FormData();
+      for (const data in newForm) {
+        formData.append(data, newForm[data]);
+      }
+      for (const data of formData.entries()) {
+        console.log(data[0] + ", " + data[1]);
+        // name, "Bagus"
+      }
+      await dispatch(postMovie(formData));
+      setPage(1);
+      getdataMovie();
+      await setImage(null);
+      resetForm();
+      alert("Create Movie Success");
+    } catch (error) {
+      console.log(error.response);
+      alert(`Create Movie Failed`);
     }
-    for (const data of formData.entries()) {
-      console.log(data[0] + ", " + data[1]);
-      // name, "Bagus"
-    }
-    dispatch(postMovie(formData));
-    dispatch(getDataMovie(page, limit));
-    setImage(null);
   };
 
   const handleUpdate = async (e) => {
     try {
       e.preventDefault();
       console.log(idMovie);
+      const newForm = {
+        ...form,
+        duration: `${form.durationHour}h ${form.durationMinute}m`,
+      };
       const formData = new FormData();
-      for (const data in form) {
-        formData.append(data, form[data]);
+      for (const data in newForm) {
+        formData.append(data, newForm[data]);
       }
-      // formData.append("name", form.name);
-      // axios.patch("...", formData)
+      for (const data of formData.entries()) {
+        console.log(data[0] + ", " + data[1]);
+      }
       await dispatch(updateMovie(idMovie, formData));
-      await dispatch(getDataMovie(page, limit));
+      setPage(1);
+      getdataMovie();
       setIsUpdate(false);
-      setForm({});
-      alert("update movie success");
+      resetForm();
+      alert("Update Movie Success");
     } catch (error) {
       console.log(error.response);
-      alert(`update movie failed ${error}`);
+      alert(`Update Movie Failed ${error}`);
     }
   };
-  const handleDelete = (id) => {
-    dispatch(deleteMovie(id));
-    dispatch(getDataMovie(page, limit));
-    resetForm();
-    console.log(id);
+  const handleDelete = async (id) => {
+    try {
+      if (window.confirm("You want to delete ?")) {
+        await dispatch(deleteMovie(id));
+        await setPage(1);
+        getdataMovie();
+        alert("Delete Movie Success");
+      }
+    } catch (error) {
+      console.log(error);
+      alert(`Delete Movie Failed ${error}`);
+    }
   };
+
   const resetForm = () => {
-    setForm.name("");
-    setForm.category("");
-    setForm.synopsis("");
-    setForm.image("");
+    setForm({
+      name: "",
+      category: "",
+      image: "",
+      releaseDate: "",
+      casts: "",
+      director: "",
+      durationHour: "",
+      durationMinute: "",
+      synopsis: "",
+    });
   };
 
   const handlePagination = (data) => {
     setPage(data.selected + 1);
-  };
-  const signIn = () => {
-    navigate("/signin");
-  };
-  const handleDetailMovie = (id) => {
-    navigate("/detail", { state: { userId: dataUser.id, id: id } });
   };
   const handleSort = (e) => {
     setSort(e.target.value);
@@ -189,7 +201,7 @@ function Home() {
               >
                 <div className={styles.main__img__img}>
                   {image ? (
-                    image && <img src={image} />
+                    image && <img src={image} alt="" />
                   ) : (
                     <img
                       src={
@@ -218,8 +230,8 @@ function Home() {
                   </label>
                   <input
                     type="text"
-                    name="movieName"
-                    value={form.movieName}
+                    name="name"
+                    value={form.name}
                     onChange={handleChangeForm}
                     className={`form-control ${styles.form__control}`}
                     id="movieName"
@@ -247,10 +259,11 @@ function Home() {
                     Release Date
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="releaseDate"
                     onChange={(event) => handleChangeForm(event)}
                     value={form.releaseDate}
+                    // "2013-01-08"
                     className={`form-control ${styles.form__control}`}
                     id="releaseDate"
                     placeholder="Release Date"
@@ -295,12 +308,12 @@ function Home() {
                       Duration Hour
                     </label>
                     <input
-                      type="text"
+                      type="tel"
                       name="durationHour"
                       onChange={(event) => handleChangeForm(event)}
                       value={form.durationHour}
                       className={`form-control ${styles.form__control}`}
-                      id="durati0nHour"
+                      id="durationHour"
                       placeholder="Duration Hour"
                       required
                     />
@@ -310,7 +323,7 @@ function Home() {
                       Duration Minute
                     </label>
                     <input
-                      type="text"
+                      type="tel"
                       name="durationMinute"
                       onChange={(event) => handleChangeForm(event)}
                       value={form.durationMinute}
@@ -392,7 +405,7 @@ function Home() {
                       {/* <span>{JSON.stringify(item)}</span> */}
                       <CardDown
                         data={item}
-                        handleDetail={handleDetailMovie}
+                        // handleDetail={handleDetailMovie}
                         setUpdate={setUpdate}
                         handleDelete={handleDelete}
                         isPageManageMovie={isPageManageMovie}

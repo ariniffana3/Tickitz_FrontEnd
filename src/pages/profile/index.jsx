@@ -87,22 +87,15 @@ function Profile(props) {
     }
   };
 
-  // Create a reference to the hidden file input element
   const hiddenFileInput = React.useRef(null);
 
-  // Programatically click the hidden file input element
-  // when the Button component is clicked
   const handleClickUpdateImage = (event) => {
     hiddenFileInput.current.click();
   };
-  // Call a function (passed as a prop from the parent component)
-  // to handle the user-selected file
   const handleChangeImage = async (event) => {
     try {
       console.log("handle change image berjalan");
       const formImage = { image: event.target.files[0] };
-      // const fileUploaded = event.target.files[0];
-      // props.handleFile(fileUploaded);
       console.log("set form image diperbaharui");
       const formData = new FormData();
       for (const data in formImage) {

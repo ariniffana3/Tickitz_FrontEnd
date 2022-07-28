@@ -18,22 +18,13 @@ function SignIn() {
   const [isError, setIsError] = useState(false);
 
   const handleChangeForm = (event) => {
-    // console.log("User sedang mengetik");
-    // console.log(event.target.name);
-    // console.log(event.target.value);
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      // console.log("Submit Login");
-      // Input = email password di siapkan
-      // console.log(form);
-      // Proses = memanggil axios
       const resultLogin = await axios.post("auth/login", form);
-      // proses get data user by id
-      //   const resultUser = await axios.get(`user/${resultLogin.data.data.id}`)
       const resultUser = [
         {
           id: 1,
@@ -41,13 +32,12 @@ function SignIn() {
         },
       ];
       let role = "";
-      if (resultLogin.data.data.id === "4") {
+      if (resultLogin.data.data.id === "2") {
         role = "admin";
       } else {
         role = "user";
       }
       resultLogin.data.data = { ...resultLogin.data.data, role: role };
-      // Output = suatu keadaan yang dapat diinfokan ke user bahwa proses sudah selesai
       setIsError(false);
       setMessage(resultLogin.data.msg);
       localStorage.setItem("token", resultLogin.data.data.token);
@@ -55,9 +45,6 @@ function SignIn() {
       localStorage.setItem("dataUser", JSON.stringify(resultLogin.data.data));
       dispatch(dataUser(resultLogin.data.data.id));
       navigate("/home");
-
-      //   UNTUK GET DATA USER
-      //   const dataUser = JSON.parse(localStorage.getItem(dataUser));
     } catch (error) {
       setIsError(true);
       setMessage(error.response.data.msg);
