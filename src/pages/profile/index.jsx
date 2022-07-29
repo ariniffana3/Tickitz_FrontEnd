@@ -115,6 +115,10 @@ function Profile(props) {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/signin");
+  };
   const handleTicket = (data) => {
     navigate("/Ticket");
   };
@@ -143,6 +147,7 @@ function Profile(props) {
             style={{ display: "none" }}
           />
           <button onClick={handleClickUpdateImage}>Update Image</button>
+          <button onClick={handleLogout}>Logout</button>
         </div>
         <div className={styles.main__right}>
           <div className={styles.main__menu}>

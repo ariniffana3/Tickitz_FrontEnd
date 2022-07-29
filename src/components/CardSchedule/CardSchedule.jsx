@@ -15,16 +15,12 @@ function CardSchedule(props) {
     "06:00pm",
     "08:00pm",
   ];
-  const item = ["08:30am", "10:00am", "12:00pm"];
   time = time.split("");
   time.pop();
   time.shift();
   time = time.join("");
   time = time.split(",");
 
-  // const mapping =()=>{
-  //   time.map((item)=>{ item !== itemDefault? styles.young__grey : itemDefault === clicking? styles.purle :styles.old__grey})
-  // }
   return (
     <>
       <div className={styles.section__cinemaBox__cinema}>
@@ -50,18 +46,9 @@ function CardSchedule(props) {
       </div>
       <hr />
       <div className={styles.section__cinemaBox__time}>
-        {timeDefault.map((itemDefault) => (
-          //  for(a=1;a<time.length;a++){
-          // itemDefault == time.map((item)=> {return item}) ? console.log("berhasil"): console.log("2");
-          //  }
-          //  time.forEach((item)=>{
-
+        {time.map((itemDefault) => (
           <div
             key={itemDefault}
-            // item !== itemDefault? styles.young__grey : itemDefault === clicking? styles.purle :styles.old__grey
-            // //time.map((item)=> {if (itemDefault == item){return `${styles.dark__grey}` }
-            // return `${styles.young__grey}`}
-            // itemDefault == "08:30am" ? styles.dark__grey: styles.young__grey
             className={
               itemDefault === props.dataOrder.time &&
               id === props.dataOrder.idOrder
@@ -71,25 +58,31 @@ function CardSchedule(props) {
             onClick={() =>
               props.changeDataOrder({ ...props.data, time: itemDefault })
             }
+            disabled={props.isPageManageSchedule ? true : false}
           >
             {itemDefault}
           </div>
-          //  })
         ))}
       </div>
       <div className={styles.section__cinemaBox__price}>
         <p>Price</p>
         <p>{price} IDR/seat</p>
       </div>
-      <button
-        // className={`styles.button__book `}
-        className="btn btn-primary"
-        //id == dataOrder.idOrder ? : false
-        disabled={id !== props.dataOrder.idOrder ? true : false}
-        onClick={props.handleOrder}
-      >
-        Book Now
-      </button>
+      {props.isPageManageSchedule ? (
+        <>
+          {" "}
+          <button onClick={props.handleDelete}>Delete</button>{" "}
+          <button onClick={props.setUpdate}>Update</button>
+        </>
+      ) : (
+        <button
+          className="btn btn-primary"
+          disabled={id !== props.dataOrder.idOrder ? true : false}
+          onClick={props.handleOrder}
+        >
+          Book Now
+        </button>
+      )}
     </>
   );
 }

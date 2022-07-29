@@ -1,6 +1,6 @@
 import axios from "../../utils/axios";
 
-export const getDataMovie = (token, page, limit, sort, dataRelease, search) => {
+export const getDataMovie = (page, limit, sort, dataRelease, search) => {
   return {
     type: "GET_DATA_MOVIE",
     payload: axios.get(

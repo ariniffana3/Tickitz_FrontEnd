@@ -45,9 +45,7 @@ function Home() {
   const getdataMovie = async () => {
     try {
       console.log("jalan");
-      await dispatch(
-        getDataMovie(token, page, limit, sort, dataRelease, search)
-      );
+      await dispatch(getDataMovie(page, limit, sort, dataRelease, search));
     } catch (error) {
       console.log(error.response);
     }

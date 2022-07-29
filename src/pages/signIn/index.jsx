@@ -44,7 +44,7 @@ function SignIn() {
       localStorage.setItem("refreshToken", resultLogin.data.data.refreshToken);
       localStorage.setItem("dataUser", JSON.stringify(resultLogin.data.data));
       dispatch(dataUser(resultLogin.data.data.id));
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       setIsError(true);
       setMessage(error.response.data.msg);

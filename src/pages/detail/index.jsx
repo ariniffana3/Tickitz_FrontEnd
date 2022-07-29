@@ -66,7 +66,7 @@ export default function Detail() {
     movieId: state.id,
     movieName: data.name,
     userId: state.userId,
-    dateBooking: moment(new Date()).format("MMM Do YY"),
+    dateBooking: moment(new Date()).format("MMM DD YY"),
     time: "",
     price: "",
   });

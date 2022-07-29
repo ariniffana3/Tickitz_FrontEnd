@@ -13,21 +13,11 @@ function Payment() {
   const navigate = useNavigate();
   const [dataUser, setDataUser] = useState([]);
   let [dataUserStorage, setDataUserStorage] = useState([]);
-  // console.log(state.userId);
   const user = useSelector((state) => state.user);
-  const navigation = useNavigate();
 
   useEffect(() => {
     getdataUser();
   }, []);
-
-  const getdata = async () => {
-    try {
-      console.log("error");
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
 
   dataUserStorage = JSON.parse(localStorage.getItem("dataUser"));
   console.log(typeof dataUserStorage);
@@ -55,7 +45,7 @@ function Payment() {
       };
       console.log(data);
       const result = await axios.post("booking", data);
-      window.location.href = `${result.data.data.redirectUrl}`;
+      window.open(`${result.data.data.redirectUrl}`, "_blank");
       console.log(result);
     } catch (error) {
       console.log(error);
@@ -192,7 +182,7 @@ function Payment() {
                   readOnly
                 />
               </div>
-              <div className={`mb-3 ${styles.mb_3} `}>
+              <div className={`mb-3 ${styles.mb_3}`}>
                 <label for="exampleInputPhone1" className={`form-label`}>
                   Phone Number
                 </label>

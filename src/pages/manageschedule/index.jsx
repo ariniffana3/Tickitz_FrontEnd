@@ -4,35 +4,35 @@ import { useNavigate, useLocation } from "react-router-dom";
 import CardDown from "../../components/CardDown/CardDown";
 import Pagination from "react-paginate";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  // getDataSchedule,
-  postMovie,
-  updateMovie,
-  deleteMovie,
-} from "../../stores/actions/movieviewall";
+import { getDataMovie } from "../../stores/actions/movieviewall";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import axios from "../../utils/axios";
+import CardSchedule from "../../components/CardSchedule/CardSchedule";
 
 function Home() {
   document.title = "Manage Movie";
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [dataRelease, setDataRelease] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("name");
+  const [movieId, setMovieId] = useState("");
+  const [location, setLocation] = useState("");
+  const limit = 8;
   const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
+  const isPageManageSchedule = true;
   const [searchOnChange, setSearchOnChange] = useState("");
   const [form, setForm] = useState({
-    movieName: "",
-    category: "",
-    image: "",
-    releaseDate: "",
-    casts: "",
-    director: "",
-    durationHour: "",
-    durationMinute: "",
-    synopsis: "",
+    Movie: "",
+    Price: "",
+    Premiere: "",
+    Location: "",
+    Time: "",
+    DateStart: "",
+    DateEnd: "",
+    image: null,
   });
   const [image, setImage] = useState(null);
   const [idMovie, setIdMovie] = useState("");
@@ -40,24 +40,28 @@ function Home() {
   const isPageManageMovie = true;
 
   const movie = useSelector((state) => state.movie);
-  const limit = 8;
 
   const dataUser = localStorage.getItem("dataUser");
 
   useEffect(() => {
+    getdataSchedule();
     getdataMovie();
   }, []);
 
-  useEffect(() => {
-    getdataMovie();
-  }, [page]);
-  const token = localStorage.getItem("token");
+  const getdataSchedule = async () => {
+    try {
+      const result = await axios.get(
+        `/schedule?page=${page}&limit=${limit}&searchMovieId=${movieId}&searchLocation=${location}&sort=${sort}`
+      );
+      setData(result.data.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   const getdataMovie = async () => {
     try {
-      // panggil action
-
-      await dispatch();
-      // getDataMovie(token, page, limit, sort, dataRelease, search)
+      console.log("jalan");
+      await dispatch(getDataMovie(page, limit, sort, dataRelease, search));
     } catch (error) {
       console.log(error.response);
     }
@@ -83,7 +87,7 @@ function Home() {
       console.log(data[0] + ", " + data[1]);
       // name, "Bagus"
     }
-    dispatch(postMovie(formData));
+    // dispatch(postMovie(formData));
     // dispatch(getDataMovie(page, limit));
     setImage(null);
   };
@@ -118,7 +122,7 @@ function Home() {
     setIsUpdate(true);
   };
   const handleDelete = (id) => {
-    dispatch(deleteMovie(id));
+    // dispatch(deleteMovie(id));
     // dispatch(getDataSchedule(page, limit));
     resetForm();
     console.log(id);
@@ -138,18 +142,12 @@ function Home() {
     }
     formData.append("name", form.name);
     // axios.patch("...", formData)
-    dispatch(updateMovie(idMovie, formData));
+    // dispatch(updateMovie(idMovie, formData));
     // dispatch(getDataSchedule(page, limit));
     setIsUpdate(false);
   };
   const handlePagination = (data) => {
     setPage(data.selected + 1);
-  };
-  const signIn = () => {
-    navigate("/signin");
-  };
-  const handleDetailMovie = (id) => {
-    navigate("/detail", { state: { userId: dataUser.id, id: id } });
   };
   const handleSort = (e) => {
     setSort(e.target.value);
@@ -189,12 +187,12 @@ function Home() {
               <div className={styles.main__form__up__middle}>
                 <div className={`mb-3`}>
                   <label for="movieName" className={`form-label`}>
-                    Movie Name
+                    Movie
                   </label>
                   <input
                     type="text"
                     value={form.movieName}
-                    onChange={(event) => handleChangeForm(event)}
+                    onChange={handleChangeForm}
                     // onChange={handleChangeForm}
                     // value={movieName}
                     className={`form-control ${styles.form__control}`}
@@ -205,12 +203,12 @@ function Home() {
                 </div>
                 <div className={`mb-3`}>
                   <label for="director" className={`form-label`}>
-                    Director
+                    Price
                   </label>
                   <input
                     type="text"
                     name="text"
-                    onChange={(event) => handleChangeForm(event)}
+                    onChange={handleChangeForm}
                     // onChange={handleChangeForm}
                     value={form.director}
                     className={`form-control ${styles.form__control}`}
@@ -221,12 +219,12 @@ function Home() {
                 </div>
                 <div className={`mb-3`}>
                   <label for="releaseDate" className={`form-label`}>
-                    Release Date
+                    Premiere
                   </label>
                   <input
                     type="text"
                     name="text"
-                    onChange={(event) => handleChangeForm(event)}
+                    onChange={handleChangeForm}
                     // onChange={handleChangeForm}
                     value={form.releaseDate}
                     className={`form-control ${styles.form__control}`}
@@ -239,12 +237,12 @@ function Home() {
               <div className={styles.main__form__up__right}>
                 <div className={`mb-3`}>
                   <label for="category" className={`form-label`}>
-                    Category
+                    Location
                   </label>
                   <input
                     type="text"
                     name="text"
-                    onChange={(event) => handleChangeForm(event)}
+                    onChange={handleChangeForm}
                     // onChange={handleChangeForm}
                     value={form.category}
                     className={`form-control ${styles.form__control}`}
@@ -255,12 +253,12 @@ function Home() {
                 </div>
                 <div className={`mb-3`}>
                   <label for="cast" className={`form-label`}>
-                    Cast
+                    Time
                   </label>
                   <input
                     type="text"
                     name="text"
-                    onChange={(event) => handleChangeForm(event)}
+                    onChange={handleChangeForm}
                     // onChange={handleChangeForm}
                     value={form.casts}
                     className={`form-control ${styles.form__control}`}
@@ -272,12 +270,12 @@ function Home() {
                 <div className={styles.main__duration}>
                   <div className={`mb-3`}>
                     <label for="durationHour" className={`form-label`}>
-                      Duration Hour
+                      Date Start
                     </label>
                     <input
                       type="text"
                       name="text"
-                      onChange={(event) => handleChangeForm(event)}
+                      onChange={handleChangeForm}
                       // onChange={handleChangeForm}
                       value={form.durationHour}
                       className={`form-control ${styles.form__control}`}
@@ -288,12 +286,12 @@ function Home() {
                   </div>
                   <div className={`mb-3`}>
                     <label for="durationMinute" className={`form-label`}>
-                      Duration Minute
+                      Date End
                     </label>
                     <input
                       type="text"
                       name="text"
-                      onChange={(event) => handleChangeForm(event)}
+                      onChange={handleChangeForm}
                       // onChange={handleChangeForm}
                       value={form.durationMinute}
                       className={`form-control ${styles.form__control}`}
@@ -305,7 +303,7 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div
+            {/* <div
               className={`${styles.main__form__middle} ${styles.main__synopsis}`}
             >
               <label for="synopsis" className={`form-label`}>
@@ -318,9 +316,9 @@ function Home() {
                 placeholder="Synopsis"
                 // onChange={handleChangeForm}
                 value={form.synopsis}
-                onChange={(event) => handleChangeForm(event)}
+                onChange={handleChangeForm}
               />
-            </div>
+            </div> */}
             <div className={styles.main__form__down}>
               <button onClick={resetForm}>reset</button>
               <button type="submit">{isUpdate ? "Update" : "Submit"}</button>
@@ -366,18 +364,14 @@ function Home() {
               </div>
             ) : (
               <div className="row">
-                {movie.data.map((item) => (
+                {data.map((item) => (
                   <div className="col-md-3">
                     <li key={item.id}>
-                      {/* <span>{JSON.stringify(item)}</span> */}
-                      <CardDown
+                      <CardSchedule
                         data={item}
-                        handleDetail={handleDetailMovie}
                         setUpdate={setUpdate}
                         handleDelete={handleDelete}
-                        isPageManageMovie={isPageManageMovie}
-                        // dataUser={dataUser}
-                        // month={newData}
+                        isPageManageSchedule={isPageManageSchedule}
                       />
                     </li>
                   </div>

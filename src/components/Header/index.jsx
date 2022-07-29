@@ -131,6 +131,29 @@ export default function Header() {
           </div>
           {wasLogin ? (
             <>
+              {/* <div class="dropdown">
+                <button
+                  class="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">
+                    Action
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    Another action
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    Something else here
+                  </a>
+                </div>
+              </div> */}
               <div>
                 <img
                   src="/img/Vector.png"
@@ -139,9 +162,15 @@ export default function Header() {
                   onClick={viewAll}
                 />
               </div>
-
+              {/* <div className="dropdown">  */}
               <div
-                className={`${styles.header__profile} ${styles.header__right__desktop}`}
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                className={`${styles.header__profile} ${styles.header__right__desktop} nav-link dropdown-toggle `}
               >
                 {wasLogin ? (
                   <img
@@ -158,6 +187,21 @@ export default function Header() {
                   <img src="/img/Ellipse 11.png" alt="" onClick={profile} />
                 )}
               </div>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="#">
+                  Dashboard
+                </a>
+                <a class="dropdown-item" href="#">
+                  Edit Profile
+                </a>
+                <a class="dropdown-item" href="#">
+                  Log Out
+                </a>
+              </div>
+              {/* </div> */}
             </>
           ) : (
             <>

@@ -20,7 +20,7 @@ function Home() {
   const [searchOnChange, setSearchOnChange] = useState("");
 
   const movie = useSelector((state) => state.movie);
-  const limit = 6;
+  const limit = 8;
 
   const dataUser = localStorage.getItem("dataUser");
 
@@ -52,9 +52,7 @@ function Home() {
     try {
       // panggil action
 
-      await dispatch(
-        getDataMovie(token, page, limit, sort, dataRelease, search)
-      );
+      await dispatch(getDataMovie(page, limit, sort, dataRelease, search));
     } catch (error) {
       console.log(error.response);
     }
@@ -126,33 +124,35 @@ function Home() {
           </ul>
         </div>
         <div className={styles.main1__img__container}>
-          <ul>
-            {movie.isLoading ? (
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
+          {/* <ul> */}
+          {movie.isLoading ? (
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            <div className="row">
+              {movie.data.map((item) => (
+                <div className="col-md-3" key={item.id}>
+                  {/* <li > */}
+                  <CardDown data={item} handleDetail={handleDetailMovie} />
+                  {/* </li> */}
+                </div>
+              ))}
+              <div className="col-12 d-flex justify-content-center text-center">
+                <Pagination
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
+                  pageCount={movie.pageInfo.totalPage}
+                  onPageChange={handlePagination}
+                  containerClassName={"pagination"}
+                  subContainerClassName={"pages pagination"}
+                  activeClassName={"active"}
+                />
               </div>
-            ) : (
-              <div className="row">
-                {movie.data.map((item) => (
-                  <div className="col-md-3">
-                    <li key={item.id}>
-                      <CardDown data={item} handleDetail={handleDetailMovie} />
-                    </li>
-                  </div>
-                ))}
-              </div>
-            )}
-          </ul>
-          <Pagination
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            breakLabel={"..."}
-            pageCount={movie.pageInfo.totalPage}
-            onPageChange={handlePagination}
-            containerClassName={"pagination"}
-            subContainerClassName={"pages pagination"}
-            activeClassName={"active"}
-          />
+            </div>
+          )}
+          {/* </ul> */}
         </div>
       </main>
       <Footer />
