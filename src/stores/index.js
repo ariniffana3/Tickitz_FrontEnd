@@ -18,4 +18,6 @@ let store = createStore(
 
 let persistor = persistStore(store);
 
-export default { store, persistor };
+const result = { store, persistor };
+
+export default result;
