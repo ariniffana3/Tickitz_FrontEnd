@@ -48,9 +48,17 @@ header ul {
 .header__right {
   padding-right: 32px;
 }
+.cont__header__profile__img {
+  max-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* overflow: hidden; */
+}
 .header__profile__img {
-  overflow: hidden;
-  width: 50px;
+  max-width: 80px;
+  max-height: 80px;
+  /* border-radius: 2px; */
 }
 header button {
   height: 40px;

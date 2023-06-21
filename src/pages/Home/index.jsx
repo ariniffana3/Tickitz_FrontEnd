@@ -7,8 +7,8 @@ import CardDown from "../../components/CardDown/CardDown";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
-function Home() {
-  document.title = "Home";
+export default function Home() {
+  document.title = "Homes";
   const navigate = useNavigate();
   const { state } = useLocation();
   const limit = 7;
@@ -207,5 +207,3 @@ function Home() {
     </>
   );
 }
-
-export default Home;

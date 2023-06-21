@@ -47,11 +47,11 @@ function SignIn() {
       navigate("/");
     } catch (error) {
       setIsError(true);
-      setMessage(error.response.data.msg);
-      setForm({
-        email: "",
-        password: "",
-      });
+      setMessage(error.response);
+      // setForm({
+      //   email: "",
+      //   password: "",
+      // });
     }
   };
   const myFunction = () => {

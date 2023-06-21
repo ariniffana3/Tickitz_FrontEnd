@@ -173,16 +173,18 @@ export default function Header() {
                 className={`${styles.header__profile} ${styles.header__right__desktop} nav-link dropdown-toggle `}
               >
                 {wasLogin ? (
-                  <img
-                    src={
-                      data
-                        ? `${process.env.REACT_APP_CLOUDINARY}${data.image}`
-                        : ""
-                    }
-                    alt="movie"
-                    className={styles.header__profile__img}
-                    onClick={profile}
-                  />
+                  <div className={styles.cont__header__profile__img}>
+                    <img
+                      src={
+                        data
+                          ? `${process.env.REACT_APP_CLOUDINARY}${data.image}`
+                          : ""
+                      }
+                      alt="movie"
+                      className={styles.header__profile__img}
+                      onClick={profile}
+                    />
+                  </div>
                 ) : (
                   <img src="/img/Ellipse 11.png" alt="" onClick={profile} />
                 )}
