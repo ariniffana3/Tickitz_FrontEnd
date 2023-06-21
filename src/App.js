@@ -6,7 +6,7 @@ import BasicHome from "./pages/basic/Home/index";
 import BasicOrder from "./pages/basic/order/order";
 import SignUp from "./pages/signUp";
 import SignIn from "./pages/signIn";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import Detail from "./pages/detail/index";
 import Order from "./pages/order/index";
 import Payment from "./pages/payment/index";

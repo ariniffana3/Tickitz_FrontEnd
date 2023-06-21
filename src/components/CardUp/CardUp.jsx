@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../pages/home/index.module.css";
+import styles from "../../pages/Home/index.module.css";
 
 function CardUp(props) {
   const { id, name, category, image } = props.data;
