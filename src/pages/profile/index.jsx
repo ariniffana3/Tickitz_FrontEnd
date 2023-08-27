@@ -45,7 +45,7 @@ function Profile(props) {
       id = JSON.parse(id).id;
       const result = await axios.get(`booking/user/${id}`);
       console.log(result);
-      // setDataHistory(result.data)
+      setDataHistory(result.data.data);
     } catch (error) {
       console.log(error.response);
     }
@@ -90,6 +90,7 @@ function Profile(props) {
   const hiddenFileInput = React.useRef(null);
 
   const handleClickUpdateImage = (event) => {
+    event.preventDefault();
     hiddenFileInput.current.click();
   };
   const handleChangeImage = async (event) => {
@@ -146,8 +147,20 @@ function Profile(props) {
             onChange={handleChangeImage}
             style={{ display: "none" }}
           />
-          <button onClick={handleClickUpdateImage}>Update Image</button>
-          <button onClick={handleLogout}>Logout</button>
+          <div>
+            <button
+              className={styles.button__account}
+              onClick={handleClickUpdateImage}
+            >
+              Update Image
+            </button>
+            <button
+              className={styles.button__account__logout}
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
         </div>
         <div className={styles.main__right}>
           <div className={styles.main__menu}>
@@ -167,7 +180,11 @@ function Profile(props) {
           {isHistory ? (
             <div>
               {dataHistory.map((item) => (
-                <OrderHistory data={item} handleTicket={handleTicket} />
+                <OrderHistory
+                  key={item.id}
+                  data={item}
+                  handleTicket={handleTicket}
+                />
               ))}
             </div>
           ) : (
@@ -229,7 +246,12 @@ function Profile(props) {
                       </div>
                     </div>
                   </div>
-                  <button onClick={handleUpdateProfile}>Update</button>
+                  <button
+                    className={styles.button__account}
+                    onClick={handleUpdateProfile}
+                  >
+                    Update
+                  </button>
                 </form>
               </div>
               <div className={styles.main__password}>
@@ -261,7 +283,12 @@ function Profile(props) {
                       />
                     </div>
                   </div>
-                  <button onClick={handleUpdatePassword}>Update</button>
+                  <button
+                    className={styles.button__account}
+                    onClick={handleUpdatePassword}
+                  >
+                    Update
+                  </button>
                 </form>
               </div>
             </div>

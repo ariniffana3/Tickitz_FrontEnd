@@ -59,6 +59,7 @@ export default function Home() {
       setPageInfo(resultMovie.data.pagination);
     } catch (error) {
       console.log(error.response);
+      setData([]);
     }
   };
   const getdataMovieRelease = async () => {
@@ -70,6 +71,7 @@ export default function Home() {
       setPageInfo(resultMovie.data.pagination);
     } catch (error) {
       console.log(error.response);
+      setDataRelease([]);
     }
   };
 
@@ -130,11 +132,15 @@ export default function Home() {
         </div>
         <div className={styles.main1__img__container__hover}>
           <ul>
-            {data.map((item) => (
-              <li key={item.id}>
-                <CardUp data={item} handleDetail={handleDetailMovie} />
-              </li>
-            ))}
+            {data.map((item) =>
+              item ? (
+                <li key={item.id}>
+                  <CardUp data={item} handleDetail={handleDetailMovie} />
+                </li>
+              ) : (
+                <></>
+              )
+            )}
           </ul>
         </div>
       </main>
@@ -175,11 +181,15 @@ export default function Home() {
         </div>
         <div className={styles.main1__img__container}>
           <ul>
-            {dataRelease.map((item) => (
-              <li key={item.id}>
-                <CardDown data={item} handleDetail={handleDetailMovie} />
-              </li>
-            ))}
+            {dataRelease.map((item) =>
+              item ? (
+                <li key={item.id}>
+                  <CardDown data={item} handleDetail={handleDetailMovie} />
+                </li>
+              ) : (
+                <></>
+              )
+            )}
           </ul>
         </div>
       </main>

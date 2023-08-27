@@ -49,10 +49,9 @@ export default function Seat(props) {
                   ? "seat__list--selected"
                   : "seat__list--available"
               }`}
-              onClick={ () => {
-                   return reserved.includes(item) ? null : selectedSeat(item);
-              }
-              }
+              onClick={() => {
+                return reserved.includes(item) ? null : selectedSeat(item);
+              }}
             ></div>
           </div>
         ))}

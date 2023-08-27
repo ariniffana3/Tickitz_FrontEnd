@@ -16,7 +16,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "GET_DATA_MOVIE_FULFILLED": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: false,
@@ -27,7 +26,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "GET_DATA_MOVIE_REJECT": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: false,
@@ -38,7 +36,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "UPDATE_MOVIE_PENDING": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: true,
@@ -46,7 +43,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "UPDATE_MOVIE_FULFILLED": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: false,
@@ -54,7 +50,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "UPDATE_MOVIE_REJECT": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: true,
@@ -65,7 +60,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "POST_MOVIE_PENDING": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: true,
@@ -73,7 +67,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "POST_MOVIE_FULFILLED": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: false,
@@ -81,7 +74,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "POST_MOVIE_REJECT": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: true,
@@ -92,7 +84,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "DELETE_MOVIE_PENDING": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: true,
@@ -100,7 +91,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "DELETE_MOVIE_FULFILLED": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: false,
@@ -108,7 +98,6 @@ const movie = (state = initialState, action) => {
       };
     }
     case "DELETE_MOVIE_REJECT": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: true,

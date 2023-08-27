@@ -1,30 +1,51 @@
 import React from "react";
+import styles from "../../pages/profile/index.module.css";
 
 export default function OrderHistory(props) {
-  const { movie, date, status, premiere } = props.data;
+  const {
+    name,
+    dateBooking,
+    statusUsed,
+    premiere,
+    timeBooking,
+    category,
+    totalTicket,
+    seat,
+    totalPayment,
+  } = props.data;
   return (
-    <div>
-      <div>
-        <div>
-          <p>{date}</p>
-          <p>{movie}</p>
+    <div className={styles.history__card}>
+      <div className={styles.history__card__up}>
+        <div className={styles.history__card__up__left}>
+          <p>{dateBooking}</p>
+          <p>{name}</p>
         </div>
-        <img
-          src={
-            premiere === "CineOne21"
-              ? "img/Home/Vector-1.png"
-              : premiere === "Hiflix"
-              ? "img/Home/Vector-2.png"
-              : premiere === "Ebv.Id"
-              ? "img/Home/Vector.png"
-              : ""
-          }
-          alt=""
-        />
+        <div className={styles.history__card__up__right}>
+          <img
+            src={
+              premiere === "CineOne21"
+                ? "img/Home/Vector-1.png"
+                : premiere === "Hiflix"
+                ? "img/Home/Vector-2.png"
+                : premiere === "Ebv.Id"
+                ? "img/Home/Vector.png"
+                : ""
+            }
+            alt=""
+          />
+        </div>
       </div>
       <hr />
-      <div>
-        <button>{status}</button>
+      <div className={styles.history__card__down}>
+        <button
+          className={
+            statusUsed === "active"
+              ? styles.history__card__down__active
+              : styles.history__card__down__nonActive
+          }
+        >
+          {statusUsed}
+        </button>
         <p>see details</p>
       </div>
     </div>

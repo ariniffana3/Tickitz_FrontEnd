@@ -92,3 +92,53 @@
   padding-left: 5px;
   padding-right: 5px;
 }
+.button__account {
+  border-radius: 7px;
+}
+.button__account__logout {
+  border-radius: 7px;
+  margin-left: 10px;
+  width: 80px;
+}
+.history__card {
+  padding: 20px 0px;
+  background-color: #fff;
+  margin: 0px 20px 20px 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+.history__card__up {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 30px;
+}
+.history__card__up__left p:first-child {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 5px;
+}
+.history__card__up__left p:last-child {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+}
+.history__card__down {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px 30px 0px;
+}
+.history__card__down button {
+  border-radius: 7px;
+}
+.history__card__down__active {
+  background-color: #00ba88;
+}
+.history__card__down__nonActive {
+  background-color: #6e7191;
+}
+.history__card__down p {
+  color: #aaa;
+}

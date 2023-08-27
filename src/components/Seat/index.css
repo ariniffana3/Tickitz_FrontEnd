@@ -31,6 +31,11 @@
   background-color: #6e7191;
 }
 
+.seat__item {
+  margin-right: 5px;
+  text-align: center;
+}
+
 @media (max-width: 575.98px) {
   .seat__row {
     margin-bottom: 5px;

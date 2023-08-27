@@ -15,8 +15,6 @@ axiosApiIntances.interceptors.request.use(
   },
   function (error) {
     if (error.response.status === 403) {
-    }
-    if (error.response.status === 403) {
       if (error.response.data.msg !== "jwt expired") {
         // alert(error.response.data.msg);
         localStorage.clear();
@@ -29,17 +27,6 @@ axiosApiIntances.interceptors.request.use(
         axiosApiIntances
           .post("auth/refresh", { refreshToken })
           .then((res) => {
-            // res = {
-            //   data: {
-            //     data: {
-            //       id: ...
-            //       token: ...
-            //       refreshToken: ...
-            //     }
-            //   }
-            // }
-            // console.log(res);
-            // alert("token baru berhasil di dapatkan");
             localStorage.setItem("token", res.data.data.token);
             localStorage.setItem("refreshToken", res.data.data.refreshToken);
             window.location.reload();

@@ -14,6 +14,7 @@ import ViewAll from "./pages/viewall/index";
 import ManageMovie from "./pages/managemovie";
 import ManageSchedule from "./pages/manageschedule";
 import Profile from "./pages/profile";
+import TicketResult from "./pages/ticketresult";
 
 import PrivateRoute from "./helpers/route/privateRoute";
 import PublicRoute from "./helpers/route/publicRoute";
@@ -39,6 +40,7 @@ function App() {
           <Route path="payment" element={<Payment />} />
           <Route path="viewall" element={<ViewAll />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="ticketresult" element={<TicketResult />} />
         </Route>
         <Route element={<PrivateRoute isAdmin={true} />}>
           <Route path="managemovie" element={<ManageMovie />} />

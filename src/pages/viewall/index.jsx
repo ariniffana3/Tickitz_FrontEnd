@@ -84,8 +84,13 @@ function Home() {
             </p>
           </div>
           <div className={styles.main1__title__right}>
-            <select name="sort" id="" onChange={handleSort}>
-              <option value="name">Sort by</option>
+            <select
+              name="sort"
+              id=""
+              onChange={handleSort}
+              className={styles.main1__title__right__sort}
+            >
+              <option value="name">Sort</option>
               <option value="name ASC">Name a-z</option>
               <option value="name DESC">Name z-a</option>
               <option value="releaseDate">Release Date</option>
@@ -97,7 +102,7 @@ function Home() {
                 <input
                   type="search"
                   id="form1"
-                  className="form-control"
+                  className={`form-control ${styles.main1__title__right__search}`}
                   onKeyPress={handleSearch}
                   placeholder="Search Movie Name"
                 />
@@ -148,6 +153,7 @@ function Home() {
                   containerClassName={"pagination"}
                   subContainerClassName={"pages pagination"}
                   activeClassName={"active"}
+                  initialPage={page - 1}
                 />
               </div>
             </div>

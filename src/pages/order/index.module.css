@@ -45,20 +45,15 @@ header ul {
   text-decoration: none;
   color: #414141;
 }
-.header__right {
-  padding-right: 32px;
-}
 .cont__header__profile__img {
   max-height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* overflow: hidden; */
 }
 .header__profile__img {
   max-width: 80px;
   max-height: 80px;
-  /* border-radius: 2px; */
 }
 header button {
   height: 40px;
@@ -80,10 +75,15 @@ header button:hover {
   align-items: center;
 }
 .header__right__desktop {
-  margin-left: 40px;
+  margin-left: 15px;
+  margin-right: 40px;
+}
+.header__right__desktop__input {
+  border-radius: 5px;
+  border-color: #d2d0d0;
 }
 .header__profile {
-  width: 50px;
+  width: 65px;
   height: 50px;
   border-radius: 25px;
   overflow: hidden;
@@ -150,7 +150,6 @@ header button:hover {
 }
 .main__seat__container {
   width: 820px;
-  height: 661px;
   background: #ffffff;
   border-radius: 10px;
   overflow: hidden;
@@ -160,6 +159,46 @@ header button:hover {
 }
 .card {
   border: none;
+}
+.main__seat__container__screen p {
+  text-align: center;
+}
+.main__seat__screen {
+  width: auto;
+  height: 8px;
+  margin-left: 35px;
+  background-color: #d6d8e7;
+  margin-bottom: 30px;
+}
+.main__seat__seating__key__p {
+  margin-top: 40px;
+  font-weight: 700;
+}
+.seating__key__container {
+  display: flex;
+  flex-direction: row;
+}
+.seating__key__container p {
+  margin-right: 20px;
+  margin-left: 10px;
+}
+.seating__key__available {
+  width: 25px;
+  height: 25px;
+  border-radius: 25%;
+  background-color: #d6d8e7;
+}
+.seating__key__selected {
+  width: 25px;
+  height: 25px;
+  border-radius: 25%;
+  background-color: #5f2eea;
+}
+.seating__key__sold {
+  width: 25px;
+  height: 25px;
+  border-radius: 25%;
+  background-color: #6e7191;
 }
 button {
   cursor: pointer;
@@ -194,11 +233,12 @@ button {
 .main__seat__button {
   width: 820px;
   padding: 30px 5px 40px;
+  margin-left: 20px;
   display: flex;
   justify-content: space-between;
 }
 .main__order__container {
-  height: 413px;
+  /* height: 413px; */
   width: 382px;
   border-radius: 10px;
   background: #ffffff;

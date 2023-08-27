@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./index.module.css";
+import "./index.css";
 
 export default function Seat(props) {
   const { rowSeat, selectedSeat, reserved, selected } = props;
@@ -23,37 +23,44 @@ export default function Seat(props) {
         <div className="col seat__col seat__col--text">{rowSeat}</div>
         {leftSeat.map((item) => (
           <div className="col seat__col" key={item}>
-            <div
-              className={`seat__list ${
-                reserved.includes(item)
-                  ? "seat__list--sold"
-                  : selected.includes(item)
-                  ? "seat__list--selected"
-                  : "seat__list--available"
-              }`}
-              onClick={() => {
-                return reserved.includes(item) ? null : selectedSeat(item);
-              }}
-            ></div>
+            {rowSeat !== " " ? (
+              <div
+                className={`seat__list ${
+                  reserved.includes(item)
+                    ? "seat__list--sold"
+                    : selected.includes(item)
+                    ? "seat__list--selected"
+                    : "seat__list--available"
+                }`}
+                onClick={() => {
+                  return reserved.includes(item) ? null : selectedSeat(item);
+                }}
+              ></div>
+            ) : (
+              <div className="seat__item">{item}</div>
+            )}
           </div>
         ))}
 
         <div className="col seat__col"></div>
         {rightSeat.map((item) => (
           <div className="col seat__col" key={item}>
-            <div
-              className={`seat__list ${
-                reserved.includes(item)
-                  ? "seat__list--sold"
-                  : selected.includes(item)
-                  ? "seat__list--selected"
-                  : "seat__list--available"
-              }`}
-              onClick={ () => {
-                   return reserved.includes(item) ? null : selectedSeat(item);
-              }
-              }
-            ></div>
+            {rowSeat !== " " ? (
+              <div
+                className={`seat__list ${
+                  reserved.includes(item)
+                    ? "seat__list--sold"
+                    : selected.includes(item)
+                    ? "seat__list--selected"
+                    : "seat__list--available"
+                }`}
+                onClick={() => {
+                  return reserved.includes(item) ? null : selectedSeat(item);
+                }}
+              ></div>
+            ) : (
+              <div className="seat__item">{item}</div>
+            )}
           </div>
         ))}
       </div>

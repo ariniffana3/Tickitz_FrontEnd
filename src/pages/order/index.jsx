@@ -10,7 +10,7 @@ function Order() {
   document.title = "Order";
   const { state } = useLocation();
   const navigate = useNavigate();
-  const listSeat = ["A", "B", "C", "D", "E", "F", "G"];
+  const listSeat = ["A", "B", "C", "D", "E", "F", "G", " "];
   const [selectedSeat, setSelectedSeat] = useState([]);
   const [reservedSeat, setReservedSeat] = useState(["A1", "C2", "B11"]);
   const [bookedSeat, setBookedSeat] = useState([]);
@@ -22,11 +22,11 @@ function Order() {
   const handleSelectSeat = (seat) => {
     setBookedSeat([...bookedSeat, seat]);
     if (selectedSeat.includes(seat)) {
-      const deleteSeat = selectedSeat.filter((el) => {
+      const leftoverSeat = selectedSeat.filter((el) => {
         return el !== seat;
       });
-      setSelectedSeat(deleteSeat);
-      setBookedSeat(deleteSeat);
+      setSelectedSeat(leftoverSeat);
+      setBookedSeat(leftoverSeat);
     } else {
       setSelectedSeat([...selectedSeat, seat]);
     }
@@ -58,18 +58,33 @@ function Order() {
           <div className={styles.main__seat}>
             <h3>Choose Your Seat</h3>
             <div className={styles.main__seat__container}>
-              <div className={`card ${styles.card}`}>
-                <div className="card-body">
-                  {listSeat.map((item) => (
-                    <div key={item}>
-                      <Seat
-                        rowSeat={item}
-                        selectedSeat={handleSelectSeat}
-                        reserved={reservedSeat}
-                        selected={selectedSeat}
-                      />
-                    </div>
-                  ))}
+              <div className={` ${styles.card__body}`}>
+                <div className={styles.main__seat__container__screen}>
+                  <p>Screen</p>
+                  <div className={styles.main__seat__screen}></div>
+                </div>
+                {listSeat.map((item) => (
+                  <div key={item}>
+                    <Seat
+                      rowSeat={item}
+                      selectedSeat={handleSelectSeat}
+                      reserved={reservedSeat}
+                      selected={selectedSeat}
+                    />
+                  </div>
+                ))}
+                <div className={styles.main__seat__seating__key}>
+                  <p className={styles.main__seat__seating__key__p}>
+                    Seating Key
+                  </p>
+                  <div className={styles.seating__key__container}>
+                    <div className={styles.seating__key__available}></div>
+                    <p>Available</p>
+                    <div className={styles.seating__key__selected}></div>
+                    <p>Selected</p>
+                    <div className={styles.seating__key__sold}></div>
+                    <p>Sold</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -112,7 +127,11 @@ function Order() {
               </div>
               <div className={styles.main__order__info__1}>
                 <h3>Seat choosed</h3>
-                <h4>{bookedSeat.map((i) => `${i}, `)} </h4>
+                <h4>
+                  {bookedSeat.map((i, index) =>
+                    bookedSeat.length !== index + 1 ? `${i}, ` : `${i}`
+                  )}{" "}
+                </h4>
               </div>
             </div>
             <hr />

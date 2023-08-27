@@ -4,17 +4,9 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
 function CardSchedule(props) {
-  console.log(props);
+  // console.log(props);
   let { id, premiere, price, location, time } = props.data;
-  const timeDefault = [
-    "08:30am",
-    "10:00am",
-    "12:00pm",
-    "02:00pm",
-    "04:00pm",
-    "06:00pm",
-    "08:00pm",
-  ];
+
   time = time.split("");
   time.pop();
   time.shift();
@@ -76,7 +68,9 @@ function CardSchedule(props) {
         </>
       ) : (
         <button
-          className="btn btn-primary"
+          className={`${
+            id !== props.dataOrder.idOrder ? styles.disable : styles.none
+          } btn btn-default`}
           disabled={id !== props.dataOrder.idOrder ? true : false}
           onClick={props.handleOrder}
         >

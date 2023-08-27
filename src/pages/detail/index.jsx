@@ -77,7 +77,7 @@ export default function Detail() {
         ...dataOrder,
       },
     });
-    console.log("handle order");
+    // console.log("handle order");
   };
   const changeDataOrder = (data) => {
     console.log(data);
@@ -97,7 +97,20 @@ export default function Detail() {
   data.defaultProps = {
     releaseDate: "default",
   };
-  console.log(location);
+  // console.log(location);
+
+  function getTodayDate() {
+    const today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    return `${year}-${month}-${day}`;
+  }
+
   return (
     <>
       <Header />
@@ -146,7 +159,7 @@ export default function Detail() {
       <section className={styles.detail__section}>
         <div className={styles.section__title}>Showtime and Tickets</div>
         <div className={styles.section__option}>
-          <input type="date" value={new Date()} />
+          <input type="date" value={getTodayDate()} />
           <select name="location" id="" onChange={handleLocation}>
             <option value="">Location</option>
             <option value="Bogor">Bogor</option>
