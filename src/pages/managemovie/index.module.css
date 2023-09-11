@@ -316,7 +316,6 @@ button {
 }
 .addition__main1 {
   padding-top: 100px;
-  /* height: 830px; */
   background-color: #f5f6f8;
 }
 .main1__img__container {
@@ -495,9 +494,6 @@ button {
   .section__img__3 {
     margin-top: 30%;
   }
-  /* .main1__img__container {
-    width: 58%;
-  } */
   .main1__img__container__hover {
     width: 58%;
   }

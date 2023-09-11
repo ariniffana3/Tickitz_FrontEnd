@@ -71,9 +71,7 @@ function ManageSchedule() {
   const handleChangeForm = async (event) => {
     event.preventDefault();
     const { name, value } = event.target;
-    // console.log(name, value, "name value");
     await setForm({ ...form, [name]: value });
-    // console.log(form, "form");
     if (name == "movieId" && !image) {
       const data = dataMovie.find((i) => {
         return i.id == value;
@@ -126,12 +124,7 @@ function ManageSchedule() {
     resetForm();
     console.log(id);
   };
-  const resetForm = () => {
-    // setForm.name("");
-    // setForm.category("");
-    // setForm.synopsis("");
-    // setForm.image("");
-  };
+  const resetForm = () => {};
   const handleUpdate = (e) => {
     e.preventDefault();
     console.log(idMovie);
@@ -170,10 +163,7 @@ function ManageSchedule() {
               <div
                 className={`${styles.main__form__up__left}${styles.main__img}`}
               >
-                <div
-                  className={styles.main__img__img}
-                  // onClick={handleClickUpdateImage}
-                >
+                <div className={styles.main__img__img}>
                   <img
                     src={
                       image
@@ -182,14 +172,6 @@ function ManageSchedule() {
                     }
                     alt="movie"
                   />
-                  {/* <input
-                    type="file"
-                    accept=".jpg, .png, .jpeg"
-                    ref={hiddenFileInput}
-                    name="image"
-                    onChange={handleChangeForm}
-                    style={{ display: "none" }}
-                  /> */}
                 </div>
               </div>
               <div className={styles.main__form__up__middle}>

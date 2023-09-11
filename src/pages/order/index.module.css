@@ -238,7 +238,6 @@ button {
   justify-content: space-between;
 }
 .main__order__container {
-  /* height: 413px; */
   width: 382px;
   border-radius: 10px;
   background: #ffffff;
@@ -399,21 +398,17 @@ hr {
   width: 15px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: rgb(223, 222, 222);
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(204, 204, 204);
 }
-/* mobile  */
 
 @media (max-width: 575.98px) {
   .order__header {
@@ -509,7 +504,6 @@ hr {
   .main__order__container {
     width: 305px;
   }
-  /* .main__order__info__1 h3, */
   .main__order__info__1 h4 {
     text-align: right;
   }

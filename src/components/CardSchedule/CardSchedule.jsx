@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import styles from "../../pages/detail/index.module.css";
-import { useNavigate } from "react-router-dom";
-import moment from "moment";
 
 function CardSchedule(props) {
-  // console.log(props);
   let { id, premiere, price, location, time } = props.data;
 
   time = time.split("");

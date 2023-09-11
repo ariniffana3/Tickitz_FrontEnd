@@ -159,7 +159,6 @@ header button:hover {
   background-color: rgba(245, 246, 248, 1);
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   flex-direction: column;
   padding: 0 8%;
   height: fit-content;
@@ -409,21 +408,17 @@ button {
   width: 15px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: rgb(223, 222, 222);
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(204, 204, 204);
 }
-/* mobile  */
 .viewMore {
   display: none;
   font-weight: 600;

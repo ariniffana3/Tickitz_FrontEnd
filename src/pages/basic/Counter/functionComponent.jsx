@@ -1,23 +1,17 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  //  const name = "Bagus";
   const [count, setCount] = useState(0);
   const [name, setName] = useState("Bagus");
-  //  index 0 = digunakan untuk pemanggilan nilai di jsx / fungsi
-  //  index 1 = digunakan untuk memanipulasi nilai
 
-  // Component Did Mount
   useEffect(() => {
     console.log("COMPONENT DID MOUNT IS RUNNING");
   }, []);
 
-  // Component Did Update
   useEffect(() => {
     console.log("COMPONENT DID UPDATE IS RUNNING");
   }, [count, name]);
 
-  //   Component Will Un Mount
   useEffect(() => {
     return () => {
       console.log("COMPONENT WILL UNMOUNT IS RUNNING");

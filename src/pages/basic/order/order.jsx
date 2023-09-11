@@ -8,8 +8,6 @@ export default function Order() {
   const [selectedSeat, setSelectedSeat] = useState([]);
   const [reservedSeat, setReservedSeat] = useState(["A1", "C2", "B11"]);
 
-  //   PROSES GET SEAT
-
   const handleSelectSeat = (seat) => {
     console.log(seat);
     if (selectedSeat.includes(seat)) {

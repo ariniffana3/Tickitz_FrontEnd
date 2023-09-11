@@ -19,7 +19,6 @@ function Login() {
     try {
       event.preventDefault();
       const resultLogin = await axios.post("auth/login", form);
-      // output = notif sukses login
       const resultUser = [
         {
           id: 1,
@@ -32,8 +31,6 @@ function Login() {
       localStorage.setItem("token", resultLogin.data.data.token);
       localStorage.setItem("refreshToken", resultLogin.data.data.refreshToken);
       localStorage.setItem("dataUser", JSON.stringify(resultUser[0]));
-      //   UNTUK GET DATA USER
-      //   const dataUser = JSON.parse(localStorage.getItem(dataUser));
 
       navigate("basic/login");
     } catch (error) {

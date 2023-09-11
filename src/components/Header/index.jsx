@@ -131,15 +131,8 @@ export default function Header() {
                 />
               </div>
               <div
-                // href="#"
-                // id="navbarDropdownMenuLink"
-                // role="button"
-                // data-toggle="dropdown"
-                // aria-haspopup="true"
-                // aria-expanded="false"
                 className={`${styles.header__profile} ${styles.header__right__desktop} nav-link dropdown-toggle `}
               >
-                {/* {wasLogin ? ( */}
                 <div className={styles.cont__header__profile__img}>
                   <img
                     src={
@@ -152,24 +145,7 @@ export default function Header() {
                     onClick={profile}
                   />
                 </div>
-                {/* ) : ( */}
-                {/* <img src="/img/Ellipse 11.png" alt="" onClick={profile} /> */}
-                {/* )} */}
               </div>
-              {/* <div
-                class="dropdown-menu"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <a class="dropdown-item" href="#">
-                  Dashboard
-                </a>
-                <a class="dropdown-item" href="#">
-                  Edit Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  Log Out
-                </a>
-              </div> */}
             </>
           ) : (
             <>

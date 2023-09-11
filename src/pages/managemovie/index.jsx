@@ -246,7 +246,6 @@ function Home() {
                     name="releaseDate"
                     onChange={(event) => handleChangeForm(event)}
                     value={form.releaseDate}
-                    // "2013-01-08"
                     className={`form-control ${styles.form__control}`}
                     id="releaseDate"
                     placeholder="Release Date"

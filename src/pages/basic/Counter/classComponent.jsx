@@ -5,7 +5,7 @@ class App extends Component {
     super();
     this.state = {
       name: "Bagus",
-      count: 0, // 1
+      count: 0,
       increaseClick: 0,
       showName: true,
     };
@@ -26,15 +26,6 @@ class App extends Component {
 
   increaseCounter = () => {
     console.log("Increase Counter");
-    // [1]
-    // if (this.state.increaseClick < 3) {
-    //   this.setState({
-    //     name: this.state.name + " Tri",
-    //     increaseClick: this.state.increaseClick + 1,
-    //   });
-    // }
-
-    // [2]
     this.setState({
       name:
         this.state.increaseClick < 3
@@ -64,8 +55,6 @@ class App extends Component {
     console.log("JSX IS RUNNING");
     return (
       <div>
-        {/* {this.state.showName && <h1>Hello {this.state.name}</h1>} */}
-        {/* {this.state.showName ? <h1>Hello {this.state.name}</h1> : null} */}
         <h1>{this.state.count.toString()}</h1>
         <button onClick={this.decreaseCounter}>-</button>
         <button onClick={this.resetCounter}>reset</button>

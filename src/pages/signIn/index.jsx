@@ -25,12 +25,7 @@ function SignIn() {
     try {
       event.preventDefault();
       const resultLogin = await axios.post("auth/login", form);
-      // const resultUser = [
-      //   {
-      //     id: 1,
-      //     name: "Bagus",
-      //   },
-      // ];
+
       let role = "";
       if (resultLogin.data.data.id === "2") {
         role = "admin";

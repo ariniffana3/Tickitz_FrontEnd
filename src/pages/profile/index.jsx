@@ -101,7 +101,6 @@ function Profile(props) {
       const result = await axios.patch(`user/image/${id}`, formData);
       await getdataUser();
       alert("Update Image Success");
-      // await setFormImage({});
     } catch (error) {
       console.log(error.response.data.msg);
       alert(`Update Image Failed ${error.response.data.msg}`);

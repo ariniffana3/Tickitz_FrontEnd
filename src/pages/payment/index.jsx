@@ -31,7 +31,6 @@ function Payment() {
 
   const handleOrder = async () => {
     try {
-      // const idUser = await AsyncStorage.getItem("idUser");
       const data = {
         userId: dataUserStorage.id,
         scheduleId: state.idOrder,

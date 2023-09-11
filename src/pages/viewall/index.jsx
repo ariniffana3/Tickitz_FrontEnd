@@ -50,8 +50,6 @@ function Home() {
   const token = localStorage.getItem("token");
   const getdataMovie = async () => {
     try {
-      // panggil action
-
       await dispatch(getDataMovie(page, limit, sort, dataRelease, search));
     } catch (error) {
       console.log(error.response);
@@ -129,7 +127,6 @@ function Home() {
           </ul>
         </div>
         <div className={styles.main1__img__container}>
-          {/* <ul> */}
           {movie.isLoading ? (
             <div className="spinner-border text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -138,9 +135,7 @@ function Home() {
             <div className="row">
               {movie.data.map((item) => (
                 <div className="col-md-3" key={item.id}>
-                  {/* <li > */}
                   <CardDown data={item} handleDetail={handleDetailMovie} />
-                  {/* </li> */}
                 </div>
               ))}
               <div className="col-12 d-flex justify-content-center text-center">
@@ -158,7 +153,6 @@ function Home() {
               </div>
             </div>
           )}
-          {/* </ul> */}
         </div>
       </main>
       <Footer />
