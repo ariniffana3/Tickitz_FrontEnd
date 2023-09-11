@@ -13,7 +13,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import moment from "moment";
 
-function Home() {
+function ManageMovie() {
   document.title = "Manage Movie";
   const dispatch = useDispatch();
   const [dataRelease, setDataRelease] = useState("");
@@ -417,4 +417,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default ManageMovie;

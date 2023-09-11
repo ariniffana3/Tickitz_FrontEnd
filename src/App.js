@@ -11,8 +11,8 @@ import Detail from "./pages/detail/index";
 import Order from "./pages/order/index";
 import Payment from "./pages/payment/index";
 import ViewAll from "./pages/viewall/index";
-import ManageMovie from "./pages/managemovie";
-import ManageSchedule from "./pages/manageschedule";
+import ManageMovie from "./pages/managemovie/index";
+import ManageSchedule from "./pages/manageschedule/index";
 import Profile from "./pages/profile";
 import TicketResult from "./pages/ticketresult";
 

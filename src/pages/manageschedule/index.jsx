@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from "../../utils/axios";
 import CardSchedule from "../../components/CardSchedule/CardSchedule";
+import moment from "moment";
 
 function ManageSchedule() {
   document.title = "Manage Schedule";
@@ -25,13 +26,14 @@ function ManageSchedule() {
     location: "",
     dateStart: "",
     dateEnd: "",
-    time: [],
+    time: "",
   });
   const [image, setImage] = useState(null);
   const [idMovie, setIdMovie] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
   const [clickTime, setClickTime] = useState(false);
   const [time, setTime] = useState([]);
+  const [timeTemp, setTimeTemp] = useState(null);
 
   useEffect(() => {
     getdataSchedule();
@@ -62,7 +64,7 @@ function ManageSchedule() {
       resultMovie = resultMovie.data.data.map((item) => {
         return { name: item.name, id: item.id, image: item.image };
       });
-      setdataMovie(resultMovie);
+      await setdataMovie(resultMovie);
     } catch (error) {
       console.log(error.response);
     }
@@ -71,8 +73,9 @@ function ManageSchedule() {
   const handleChangeForm = async (event) => {
     event.preventDefault();
     const { name, value } = event.target;
+    console.log(name, value);
     await setForm({ ...form, [name]: value });
-    if (name == "movieId" && !image) {
+    if (name == "movieId") {
       const data = dataMovie.find((i) => {
         return i.id == value;
       });
@@ -83,57 +86,108 @@ function ManageSchedule() {
   const handleClickTime = () => {
     setClickTime(true);
   };
-
-  const handleChangeTime = (e) => {
-    e.preventDefault();
+  const handleChangeTime = async (e) => {
     const { name, value } = e.target;
-    console.log(name, value, "name value");
-    console.log(e.key);
-    if (e.key === "Enter") {
-      console.log(value, "value");
+    setForm({ ...form, time: value });
+    if (e.target.value.length == 5) {
+      await setTime([...time, value]);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form, "form");
-    const formData = new FormData();
-    for (const data in form) {
-      formData.append(data, form[data]);
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+
+      let timeTemp = time;
+      const a = timeTemp.join(",");
+      const b = a.split();
+      b.unshift("[");
+      b.push("]");
+      timeTemp = b.join("");
+      const newForm = {
+        ...form,
+        time: timeTemp,
+      };
+      await axios.post(`schedule`, newForm);
+      setPage(1);
+      alert("Success Submit");
+      resetForm();
+    } catch (error) {
+      console.log(error.response);
+      alert(`Create Movie Failed`);
     }
-    setImage(null);
   };
   const setUpdate = async (data) => {
-    console.log(data);
+    let time = data.time.split("");
+    time.pop();
+    time.shift();
+    time = time.join("");
+    time = time.split(",");
     setForm({
       ...form,
-      movieName: data.name,
-      category: data.category,
-      image: data.image,
-      releaseDate: data.releaseDate,
-      casts: data.casts,
-      director: data.director,
-      durationHour: data.duration,
-      durationMinute: data.duration,
-      synopsis: data.synopsis,
+      id: data.id,
+      movieId: data.movieId,
+      premiere: data.premiere,
+      price: data.price,
+      location: data.location,
+      dateStart: moment(data.dateStart).format("yyyy-MM-DD"),
+      dateEnd: moment(data.dateEnd).format("yyyy-MM-DD"),
     });
-    setIdMovie(data.id);
+    setTime(time);
+    const dataImage = dataMovie.find((i) => {
+      return i.id == data.movieId;
+    });
+    setImage(dataImage.image);
     setIsUpdate(true);
   };
-  const handleDelete = (id) => {
-    resetForm();
-    console.log(id);
-  };
-  const resetForm = () => {};
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    console.log(idMovie);
-    const formData = new FormData();
-    for (const data in form) {
-      formData.append(data, form[data]);
+  const handleDelete = async (id) => {
+    try {
+      if (window.confirm("You want to delete ?")) {
+        await axios.delete(`schedule/${id}`);
+        await setPage(1);
+        alert("Delete Movie Success");
+      }
+    } catch (error) {
+      console.log(error);
+      alert(`Delete Movie Failed ${error}`);
     }
-    formData.append("name", form.name);
-    setIsUpdate(false);
+  };
+  const resetForm = () => {
+    setForm({
+      movieId: "",
+      premiere: "",
+      price: "",
+      location: "",
+      dateStart: "",
+      dateEnd: "",
+      time: "",
+    });
+    setTime([]);
+    setImage(null);
+    setClickTime(false);
+  };
+  const handleUpdate = async (e) => {
+    try {
+      e.preventDefault();
+      let timeTemp = time;
+      const a = timeTemp.join(",");
+      const b = a.split();
+      b.unshift("[");
+      b.push("]");
+      timeTemp = b.join("");
+      const newForm = {
+        ...form,
+        time: timeTemp,
+      };
+      await axios.patch(`schedule/${form.id}`, newForm);
+      setPage(1);
+      alert("Success Update");
+      resetForm();
+      setIsUpdate(false);
+    } catch (error) {
+      console.log(error.response);
+      alert(`Update Movie Failed`);
+    }
   };
   const handlePagination = (data) => {
     setPage(data.selected + 1);
@@ -182,9 +236,10 @@ function ManageSchedule() {
                   <br />
                   <select
                     name="movieId"
-                    id="movieName"
+                    id=""
                     onChange={handleChangeForm}
                     className={styles.option}
+                    value={form.movieId}
                   >
                     <option value="name ASC"></option>
                     {dataMovie.map((item) => {
@@ -207,7 +262,7 @@ function ManageSchedule() {
                     inputmode="numeric"
                     name="price"
                     onChange={handleChangeForm}
-                    value={form.director}
+                    value={form.price}
                     className={`form-control ${styles.number}`}
                     id="director"
                     placeholder="Price"
@@ -301,6 +356,7 @@ function ManageSchedule() {
                   <select
                     name="location"
                     id=""
+                    value={form.location}
                     onChange={handleChangeForm}
                     className={styles.option}
                   >
@@ -365,8 +421,8 @@ function ManageSchedule() {
                     <input
                       type="text"
                       name="time"
-                      onKeyUp={handleChangeTime}
-                      value={form.casts}
+                      onChange={handleChangeTime}
+                      value={form.time}
                       className={
                         clickTime
                           ? `form-control ${styles.time} `
@@ -374,7 +430,6 @@ function ManageSchedule() {
                       }
                       id="cast"
                       placeholder="08:00"
-                      required
                     />
                     {time.map((item) => {
                       return (

@@ -55,11 +55,14 @@ function CardSchedule(props) {
       {props.isPageManageSchedule ? (
         <div className={styles.container__button}>
           {" "}
-          <button onClick={props.setUpdate} className={styles.button__update}>
+          <button
+            onClick={() => props.setUpdate(props.data)}
+            className={styles.button__update}
+          >
             Update
           </button>
           <button
-            onClick={props.handleDelete}
+            onClick={() => props.handleDelete(id)}
             className={styles.button__delete}
           >
             Delete
