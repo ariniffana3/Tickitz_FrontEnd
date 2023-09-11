@@ -19,14 +19,7 @@ function Home() {
 
   const getdataMovie = async () => {
     try {
-      console.log("GET DATA MOVIE");
-      // Input
-      //   console.log(limit);
-      //   console.log(page);
-      // Proses
       const resultMovie = await axios.get(`movie?page=${page}&limit=${limit}`);
-      //   console.log(resultMovie);
-      // Output
       setData(resultMovie.data.data);
       setPageInfo(resultMovie.data.pagination);
     } catch (error) {
@@ -45,7 +38,7 @@ function Home() {
 
   return (
     <div className="text-center container">
-      <div class="dropdown">
+      {/* <div class="dropdown">
         <button
           class="btn btn-secondary dropdown-toggle"
           type="button"
@@ -67,7 +60,7 @@ function Home() {
             Something else here
           </a>
         </div>
-      </div>
+      </div> */}
       <h1>Home Page</h1>
       <hr />
       <div className="row">

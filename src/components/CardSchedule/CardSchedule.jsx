@@ -41,12 +41,7 @@ function CardSchedule(props) {
         {time.map((itemDefault) => (
           <div
             key={itemDefault}
-            className={
-              itemDefault === props.dataOrder.time &&
-              id === props.dataOrder.idOrder
-                ? styles.purple
-                : styles.dark__grey
-            }
+            className={styles.dark__grey}
             onClick={() =>
               props.changeDataOrder({ ...props.data, time: itemDefault })
             }
@@ -61,11 +56,18 @@ function CardSchedule(props) {
         <p>{price} IDR/seat</p>
       </div>
       {props.isPageManageSchedule ? (
-        <>
+        <div className={styles.container__button}>
           {" "}
-          <button onClick={props.handleDelete}>Delete</button>{" "}
-          <button onClick={props.setUpdate}>Update</button>
-        </>
+          <button onClick={props.setUpdate} className={styles.button__update}>
+            Update
+          </button>
+          <button
+            onClick={props.handleDelete}
+            className={styles.button__delete}
+          >
+            Delete
+          </button>{" "}
+        </div>
       ) : (
         <button
           className={`${

@@ -220,6 +220,7 @@ header button:hover {
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+  height: 89px;
 }
 .section__cinemaBox__img {
   flex: 1;
@@ -262,6 +263,7 @@ hr {
   flex-direction: row;
   flex-wrap: wrap;
   padding-top: 15px;
+  height: 78px;
 }
 .section__cinemaBox__time div {
   padding: 8px 16px;
@@ -305,6 +307,22 @@ hr {
 }
 button {
   cursor: pointer;
+}
+.button__delete {
+  background-color: white;
+  border: 1px solid red;
+  color: red;
+  border-radius: 10px;
+}
+.button__update {
+  background-color: white;
+  border: 1px solid #5f2eae;
+  color: #5f2eae;
+  border-radius: 10px;
+}
+.container__button {
+  display: flex;
+  justify-content: space-around;
 }
 .disabled {
   opacity: 0.6;

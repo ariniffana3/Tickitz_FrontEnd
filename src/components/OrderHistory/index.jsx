@@ -1,11 +1,13 @@
 import React from "react";
 import styles from "../../pages/profile/index.module.css";
-
+import { useNavigate } from "react-router-dom";
 export default function OrderHistory(props) {
   const {
+    id,
     name,
     dateBooking,
     statusUsed,
+    qrCode,
     premiere,
     timeBooking,
     category,
@@ -13,11 +15,16 @@ export default function OrderHistory(props) {
     seat,
     totalPayment,
   } = props.data;
+  const navigate = useNavigate();
+  const date = `${dateBooking} - ${timeBooking}`;
+  const handleClickTicket = (id) => {
+    navigate(`/ticketResult/${id}`);
+  };
   return (
     <div className={styles.history__card}>
       <div className={styles.history__card__up}>
         <div className={styles.history__card__up__left}>
-          <p>{dateBooking}</p>
+          <p>{date}</p>
           <p>{name}</p>
         </div>
         <div className={styles.history__card__up__right}>
@@ -43,8 +50,9 @@ export default function OrderHistory(props) {
               ? styles.history__card__down__active
               : styles.history__card__down__nonActive
           }
+          onClick={() => handleClickTicket(id)}
         >
-          {statusUsed}
+          {statusUsed === "active" ? "Ticket In Active" : "Ticket Used"}
         </button>
         <p>see details</p>
       </div>

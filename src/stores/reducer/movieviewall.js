@@ -9,7 +9,6 @@ const initialState = {
 const movie = (state = initialState, action) => {
   switch (action.type) {
     case "GET_DATA_MOVIE_PENDING": {
-      //   console.log(action.data);
       return {
         ...state,
         isLoading: true,

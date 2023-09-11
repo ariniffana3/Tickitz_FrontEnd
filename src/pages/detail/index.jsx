@@ -15,14 +15,10 @@ import Footer from "../../components/Footer";
 export default function Detail() {
   document.title = "Detail Movie";
 
-  const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
-  const [pageInfo, setPageInfo] = useState({});
   const [dataSchedule, setDataSchedule] = useState([]);
   const [pageInfoSchedule, setPageInfoSchedule] = useState({});
-  const [dataRilis, setDataRilis] = useState({});
   const [location, setLocation] = useState([]);
-  const [dateNow, setDateNow] = useState(moment(new Date()).format("L"));
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -50,7 +46,6 @@ export default function Detail() {
 
   const getdataSchedule = async () => {
     try {
-      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const resultSchedule = await axios.get(
         `/schedule?page=1&limit=6&searchMovieId=${state.id}&searchLocation=${location}&sort=`
       );
@@ -77,10 +72,8 @@ export default function Detail() {
         ...dataOrder,
       },
     });
-    // console.log("handle order");
   };
   const changeDataOrder = (data) => {
-    console.log(data);
     setDataOrder({
       ...dataOrder,
       idOrder: data.id,
@@ -97,7 +90,6 @@ export default function Detail() {
   data.defaultProps = {
     releaseDate: "default",
   };
-  // console.log(location);
 
   function getTodayDate() {
     const today = new Date();

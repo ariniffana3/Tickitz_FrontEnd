@@ -20,8 +20,18 @@ function Card2(props) {
         </div>
         {props.isPageManageMovie ? (
           <>
-            <button onClick={() => props.setUpdate(props.data)}>update</button>
-            <button onClick={() => props.handleDelete(id)}>delete</button>
+            <button
+              className={styles.main1__manageMovie__button1}
+              onClick={() => props.setUpdate(props.data)}
+            >
+              update
+            </button>
+            <button
+              className={styles.main1__manageMovie__button2}
+              onClick={() => props.handleDelete(id)}
+            >
+              delete
+            </button>
           </>
         ) : (
           <button onClick={() => props.handleDetail(id)}>Details</button>

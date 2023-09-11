@@ -24,25 +24,6 @@ function CardUp(props) {
           Details
         </button>
       </div>
-
-      {/* <div className="card">
-          <img
-            src={
-              image
-                ? `https://res.cloudinary.com/dd1uwz8eu/image/upload/v1648786582/${image}`
-                : "https://www.a1hosting.net/wp-content/themes/arkahost/assets/images/default.jpg"
-            }
-            className="card-img-top"
-            alt="..."
-          />
-          <div className="card-body">
-            <h5 className="card-title">{name}</h5>
-            <p className="card-text">{category}</p>
-            <button className="btn btn-primary" onClick={() => props.handleDetail(id)}>
-              Detail
-            </button>
-          </div>
-        </div> */}
     </>
   );
 }

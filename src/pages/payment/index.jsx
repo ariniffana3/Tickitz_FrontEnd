@@ -20,8 +20,6 @@ function Payment() {
   }, []);
 
   dataUserStorage = JSON.parse(localStorage.getItem("dataUser"));
-  console.log(typeof dataUserStorage);
-  console.log(dataUserStorage.id);
 
   const getdataUser = async () => {
     try {
@@ -43,10 +41,8 @@ function Payment() {
         totalPayment: state.totalPayment,
         seat: state.seat,
       };
-      console.log(data);
       const result = await axios.post("booking", data);
       window.open(`${result.data.data.redirectUrl}`, "_blank");
-      console.log(result);
     } catch (error) {
       console.log(error);
       alert("Failed to process");

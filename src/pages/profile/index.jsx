@@ -30,11 +30,9 @@ function Profile(props) {
 
   const getdataUser = async () => {
     try {
-      console.log("get data user id");
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
       const result = await dispatch(dataUser(id));
-      console.log("result", result);
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +42,6 @@ function Profile(props) {
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
       const result = await axios.get(`booking/user/${id}`);
-      console.log(result);
       setDataHistory(result.data.data);
     } catch (error) {
       console.log(error.response);
@@ -76,7 +73,6 @@ function Profile(props) {
   const handleUpdatePassword = async (e) => {
     try {
       e.preventDefault();
-      console.log(formPassword);
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
       const result = await axios.patch(`user/password/${id}`, formPassword);
@@ -95,18 +91,14 @@ function Profile(props) {
   };
   const handleChangeImage = async (event) => {
     try {
-      console.log("handle change image berjalan");
       const formImage = { image: event.target.files[0] };
-      console.log("set form image diperbaharui");
       const formData = new FormData();
       for (const data in formImage) {
         formData.append(data, formImage[data]);
       }
-      console.log(formData);
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
       const result = await axios.patch(`user/image/${id}`, formData);
-      console.log("image updated");
       await getdataUser();
       alert("Update Image Success");
       // await setFormImage({});

@@ -120,7 +120,7 @@
   margin-bottom: 5px;
 }
 .history__card__up__left p:last-child {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   color: #000;
 }
@@ -135,9 +135,11 @@
 }
 .history__card__down__active {
   background-color: #00ba88;
+  width: 196px;
 }
 .history__card__down__nonActive {
   background-color: #6e7191;
+  width: 196px;
 }
 .history__card__down p {
   color: #aaa;

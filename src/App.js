@@ -19,6 +19,9 @@ import TicketResult from "./pages/ticketresult";
 import PrivateRoute from "./helpers/route/privateRoute";
 import PublicRoute from "./helpers/route/publicRoute";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 function App() {
   return (
     <BrowserRouter>
@@ -40,7 +43,7 @@ function App() {
           <Route path="payment" element={<Payment />} />
           <Route path="viewall" element={<ViewAll />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="ticketresult" element={<TicketResult />} />
+          <Route path="ticketresult/:id" element={<TicketResult />} />
         </Route>
         <Route element={<PrivateRoute isAdmin={true} />}>
           <Route path="managemovie" element={<ManageMovie />} />

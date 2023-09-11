@@ -40,7 +40,6 @@ function Order() {
       seat: bookedSeat,
       totalPayment: bookedSeat.length * state.price,
     };
-    console.log(data);
     navigate("/payment", { state: { ...data } });
   };
   return (

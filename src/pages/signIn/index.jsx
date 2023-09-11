@@ -25,18 +25,19 @@ function SignIn() {
     try {
       event.preventDefault();
       const resultLogin = await axios.post("auth/login", form);
-      const resultUser = [
-        {
-          id: 1,
-          name: "Bagus",
-        },
-      ];
+      // const resultUser = [
+      //   {
+      //     id: 1,
+      //     name: "Bagus",
+      //   },
+      // ];
       let role = "";
       if (resultLogin.data.data.id === "2") {
         role = "admin";
       } else {
         role = "user";
       }
+      console.log(resultLogin.data.data);
       resultLogin.data.data = { ...resultLogin.data.data, role: role };
       setIsError(false);
       setMessage(resultLogin.data.msg);
@@ -47,11 +48,7 @@ function SignIn() {
       navigate("/");
     } catch (error) {
       setIsError(true);
-      setMessage(error.response);
-      // setForm({
-      //   email: "",
-      //   password: "",
-      // });
+      setMessage(error.response.data.msg);
     }
   };
   const myFunction = () => {

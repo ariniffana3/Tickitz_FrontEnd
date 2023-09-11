@@ -1,67 +1,53 @@
-import React, {useState} from "react";
-import axios from "../../../utils/axios"
-import { useNavigate} from "react-router-dom"
+import React, { useState } from "react";
+import axios from "../../../utils/axios";
+import { useNavigate } from "react-router-dom";
 
-
-function Login(){
-  // front end
-  // 1. slicing
-  // 2. pembuatan fungsi
-  // 3. integrasi
-  // 3.a. input
-  // 3.b process
-  // 3.c output
-  const navigate = useNavigate()
+function Login() {
+  const navigate = useNavigate();
   const [form, setform] = useState({
-    email:"",
-    password:""
-  })
-  const [message, setMessage] = useState("")
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-    const handleChangeForm = (event) => {
-        // console.log("User sedang mengetik");
-        // console.log(event.target.name)
-        // console.log(event.target.value)
-        setform({...form,[event.target.name]:event.target.value})
-      };
-    
-    const handleSubmit = async (event) => {
-      try {
-        event.preventDefault();
-        const resultLogin = await axios.post("auth/login", form)
-        // output = notif sukses login
-        const resultUser = [
-          {
-            id: 1,
-            name: "Bagus"
-          }
-        ];
-  
-        setIsError(false);
-        setMessage(resultLogin.data.msg);
-        localStorage.setItem("token", resultLogin.data.data.token);
-        localStorage.setItem("refreshToken", resultLogin.data.data.refreshToken);
-        localStorage.setItem("dataUser", JSON.stringify(resultUser[0]));
-//   UNTUK GET DATA USER
-      //   const dataUser = JSON.parse(localStorage.getItem(dataUser));
-  
-        navigate("basic/login")
-      } catch (error) {
-        console.log(error.response)
-        setIsError(true);
-      setMessage(error.response.data.msg);
+  const handleChangeForm = (event) => {
+    setform({ ...form, [event.target.name]: event.target.value });
+  };
 
-      }
-        // event.preventDefault();
-        // console.log(form);
-      };
-    
-    const handleReset = (event) => {
-        event.preventDefault();
-        console.log("Reset Form");
-      };
-return (
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      const resultLogin = await axios.post("auth/login", form);
+      // output = notif sukses login
+      const resultUser = [
+        {
+          id: 1,
+          name: "Bagus",
+        },
+      ];
+
+      setIsError(false);
+      setMessage(resultLogin.data.msg);
+      localStorage.setItem("token", resultLogin.data.data.token);
+      localStorage.setItem("refreshToken", resultLogin.data.data.refreshToken);
+      localStorage.setItem("dataUser", JSON.stringify(resultUser[0]));
+      //   UNTUK GET DATA USER
+      //   const dataUser = JSON.parse(localStorage.getItem(dataUser));
+
+      navigate("basic/login");
+    } catch (error) {
+      console.log(error.response);
+      setIsError(true);
+      setMessage(error.response.data.msg);
+    }
+  };
+
+  const handleReset = (event) => {
+    event.preventDefault();
+    console.log("Reset Form");
+  };
+  return (
     <div className="text-center container">
       <h1>Login Page</h1>
       {!message ? null : isError ? (
@@ -97,8 +83,7 @@ return (
         </button>
       </form>
     </div>
-
-)    
+  );
 }
 
 export default Login;

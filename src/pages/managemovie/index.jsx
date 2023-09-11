@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.css";
-import { useNavigate } from "react-router-dom";
 import CardDown from "../../components/CardDown/CardDown";
 import Pagination from "react-paginate";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,20 +9,17 @@ import {
   updateMovie,
   deleteMovie,
 } from "../../stores/actions/movieviewall";
-import axios from "axios";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import moment from "moment";
 
 function Home() {
   document.title = "Manage Movie";
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dataRelease, setDataRelease] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("name");
   const [search, setSearch] = useState("");
-  const [searchOnChange, setSearchOnChange] = useState("");
   const [form, setForm] = useState({});
   const [image, setImage] = useState(null);
   const [idMovie, setIdMovie] = useState("");
@@ -31,8 +27,6 @@ function Home() {
   const isPageManageMovie = true;
   const movie = useSelector((state) => state.movie);
   const limit = 8;
-  const dataUser = localStorage.getItem("dataUser");
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     getdataMovie();
@@ -40,11 +34,10 @@ function Home() {
 
   useEffect(() => {
     getdataMovie();
-  }, [page]);
+  }, [page, sort, search]);
 
   const getdataMovie = async () => {
     try {
-      console.log("jalan");
       await dispatch(getDataMovie(page, limit, sort, dataRelease, search));
     } catch (error) {
       console.log(error.response);
@@ -52,7 +45,6 @@ function Home() {
   };
 
   const setUpdate = async (data) => {
-    console.log(data);
     const durationHour = data.duration.split("h")[0];
     const durationMinute = data.duration.split("h")[1].split("m")[0];
     setForm({
@@ -83,7 +75,6 @@ function Home() {
 
   const hiddenFileInput = React.useRef(null);
   const handleClickUpdateImage = (event) => {
-    event.preventDefault();
     hiddenFileInput.current.click();
   };
 
@@ -94,15 +85,9 @@ function Home() {
         ...form,
         duration: `${form.durationHour}h ${form.durationMinute}m`,
       };
-      console.log(form.casts);
-      console.log(newForm);
       const formData = new FormData();
       for (const data in newForm) {
         formData.append(data, newForm[data]);
-      }
-      for (const data of formData.entries()) {
-        console.log(data[0] + ", " + data[1]);
-        // name, "Bagus"
       }
       await dispatch(postMovie(formData));
       setPage(1);
@@ -119,7 +104,6 @@ function Home() {
   const handleUpdate = async (e) => {
     try {
       e.preventDefault();
-      console.log(idMovie);
       const newForm = {
         ...form,
         duration: `${form.durationHour}h ${form.durationMinute}m`,
@@ -127,9 +111,6 @@ function Home() {
       const formData = new FormData();
       for (const data in newForm) {
         formData.append(data, newForm[data]);
-      }
-      for (const data of formData.entries()) {
-        console.log(data[0] + ", " + data[1]);
       }
       await dispatch(updateMovie(idMovie, formData));
       setPage(1);
@@ -168,6 +149,7 @@ function Home() {
       durationMinute: "",
       synopsis: "",
     });
+    setImage("");
   };
 
   const handlePagination = (data) => {
@@ -188,16 +170,19 @@ function Home() {
       <main className={`${styles.main} ${styles.addition__main}`}>
         <div className={styles.main__title}>
           <div className={styles.main__title__p1}>
-            <p>List Movie</p>
+            <p>Form Movie</p>
           </div>
         </div>
         <div className={styles.main__form}>
           <form action="">
             <div className={styles.main__form__up}>
               <div
-                className={`${styles.main__form__up__left}${styles.main__img}`}
+                className={`${styles.main__form__up__left} ${styles.main__img}`}
               >
-                <div className={styles.main__img__img}>
+                <div
+                  className={styles.main__img__img}
+                  onClick={handleClickUpdateImage}
+                >
                   {image ? (
                     image && <img src={image} alt="" />
                   ) : (
@@ -213,16 +198,16 @@ function Home() {
 
                   <input
                     type="file"
+                    accept=".jpg, .png, .jpeg"
                     ref={hiddenFileInput}
                     name="image"
                     onChange={handleChangeForm}
                     style={{ display: "none" }}
                   />
-                  <button onClick={handleClickUpdateImage}>Change</button>
                 </div>
               </div>
               <div className={styles.main__form__up__middle}>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form}`}>
                   <label for="movieName" className={`form-label`}>
                     Movie Name
                   </label>
@@ -237,7 +222,7 @@ function Home() {
                     required
                   />
                 </div>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form}`}>
                   <label for="director" className={`form-label`}>
                     Director
                   </label>
@@ -252,7 +237,7 @@ function Home() {
                     required
                   />
                 </div>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form}`}>
                   <label for="releaseDate" className={`form-label`}>
                     Release Date
                   </label>
@@ -270,7 +255,7 @@ function Home() {
                 </div>
               </div>
               <div className={styles.main__form__up__right}>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form}`}>
                   <label for="category" className={`form-label`}>
                     Category
                   </label>
@@ -285,7 +270,7 @@ function Home() {
                     required
                   />
                 </div>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form}`}>
                   <label for="cast" className={`form-label`}>
                     Cast
                   </label>
@@ -301,31 +286,31 @@ function Home() {
                   />
                 </div>
                 <div className={styles.main__duration}>
-                  <div className={`mb-3`}>
+                  <div className={`mb-3 ${styles.form__duration}`}>
                     <label for="durationHour" className={`form-label`}>
                       Duration Hour
                     </label>
                     <input
-                      type="tel"
+                      type="number"
                       name="durationHour"
                       onChange={(event) => handleChangeForm(event)}
                       value={form.durationHour}
-                      className={`form-control ${styles.form__control}`}
+                      className={`form-control ${styles.form__control} ${styles.number}`}
                       id="durationHour"
                       placeholder="Duration Hour"
                       required
                     />
                   </div>
-                  <div className={`mb-3`}>
+                  <div className={`mb-3 ${styles.form__duration}`}>
                     <label for="durationMinute" className={`form-label`}>
                       Duration Minute
                     </label>
                     <input
-                      type="tel"
+                      type="number"
                       name="durationMinute"
                       onChange={(event) => handleChangeForm(event)}
                       value={form.durationMinute}
-                      className={`form-control ${styles.form__control}`}
+                      className={`form-control ${styles.form__control} ${styles.number}`}
                       id="durationMinute"
                       placeholder="Duration Minute"
                       required
@@ -335,7 +320,7 @@ function Home() {
               </div>
             </div>
             <div
-              className={`${styles.main__form__middle} ${styles.main__synopsis}`}
+              className={`${styles.main__form__middle} ${styles.main__synopsis} ${styles.form}`}
             >
               <label for="synopsis" className={`form-label`}>
                 Synopsis
@@ -344,26 +329,31 @@ function Home() {
                 type="textarea"
                 name="synopsis"
                 id="synopsis"
-                className={`form-control ${styles.form__control}`}
+                className={`form-control ${styles.form__control} ${styles.textarea}`}
                 placeholder="Synopsis"
                 value={form.synopsis}
                 onChange={(event) => handleChangeForm(event)}
               />
             </div>
             <div className={styles.main__form__down}>
-              <button onClick={resetForm}>reset</button>
-              <button onClick={isUpdate ? handleUpdate : handleSubmit}>
+              <button className={styles.button} onClick={resetForm}>
+                reset
+              </button>
+              <button
+                className={styles.button}
+                onClick={isUpdate ? handleUpdate : handleSubmit}
+              >
                 {isUpdate ? "Update" : "Submit"}
               </button>
             </div>
           </form>
         </div>
       </main>
-      <main className={`${styles.main1} ${styles.addition__main1}`}>
+      <main className={`${styles.main1} ${styles.addition__main2}`}>
         <div className={styles.main1__title}>
-          <div className={styles.main__title__p1}>
+          <div className={styles.main1__title__p1}>
             <p>
-              <a href=""> List Movie</a>
+              <a href=""> Data Movie</a>
             </p>
           </div>
           <div className={styles.main1__title__right}>
@@ -371,7 +361,7 @@ function Home() {
               <option value="name">Sort by</option>
               <option value="name ASC">Name a-z</option>
               <option value="name DESC">Name z-a</option>
-              <option value="releaseDate">Release Date</option>
+              <option value="releaseDate DESC">Release Date</option>
             </select>
             <div
               className={`input-group ${styles.main1__title__right__search}`}
@@ -384,7 +374,6 @@ function Home() {
                   onKeyPress={handleSearch}
                   placeholder="Search Movie Name"
                 />
-                {/* <label className="form-label" for="form1"></label> */}
               </div>
             </div>
           </div>
@@ -400,15 +389,11 @@ function Home() {
                 {movie.data.map((item) => (
                   <div className="col-md-3">
                     <li key={item.id}>
-                      {/* <span>{JSON.stringify(item)}</span> */}
                       <CardDown
                         data={item}
-                        // handleDetail={handleDetailMovie}
                         setUpdate={setUpdate}
                         handleDelete={handleDelete}
                         isPageManageMovie={isPageManageMovie}
-                        // dataUser={dataUser}
-                        // month={newData}
                       />
                     </li>
                   </div>

@@ -29,19 +29,15 @@ export default function Header() {
 
   const getdataUser = async () => {
     try {
-      console.log("get data user id");
       let id = localStorage.getItem("dataUser");
       id = JSON.parse(id).id;
       const result = await dispatch(dataUser(id));
-      console.log("result", result);
       setData(result.value.data.data[0]);
     } catch (error) {
       console.log(error);
     }
   };
-  if (data) {
-    console.log(data.image, data.firstName);
-  }
+
   const signIn = () => {
     navigate("/signin");
   };
@@ -72,7 +68,7 @@ export default function Header() {
             <li className={styles.header__li}>
               <a href="" className={styles.header__li__link} onClick={Home}>
                 <img
-                  src="img/Home/vector tickitz 2.png"
+                  src="/img/Home/vector tickitz 2.png"
                   alt="tickitz"
                   className={styles.header__img}
                 />
@@ -113,7 +109,7 @@ export default function Header() {
                 <li className={styles.header__li}>
                   <a
                     href=""
-                    onClick={Detail}
+                    onClick={viewAll}
                     className={`${styles.header__li__link} ${styles.mobile__header__li}`}
                   >
                     List Movie
@@ -124,11 +120,6 @@ export default function Header() {
           </ul>
         </div>
         <div className={styles.header__right}>
-          <div className={styles.header__hamburger} onClick="showMenu()">
-            <div className={styles.header__hamburger__line}></div>
-            <div className={styles.header__hamburger__line}></div>
-            <div className={styles.header__hamburger__line}></div>
-          </div>
           {wasLogin ? (
             <>
               <div className="input-group">
@@ -140,32 +131,32 @@ export default function Header() {
                 />
               </div>
               <div
-                href="#"
-                id="navbarDropdownMenuLink"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+                // href="#"
+                // id="navbarDropdownMenuLink"
+                // role="button"
+                // data-toggle="dropdown"
+                // aria-haspopup="true"
+                // aria-expanded="false"
                 className={`${styles.header__profile} ${styles.header__right__desktop} nav-link dropdown-toggle `}
               >
-                {wasLogin ? (
-                  <div className={styles.cont__header__profile__img}>
-                    <img
-                      src={
-                        data
-                          ? `${process.env.REACT_APP_CLOUDINARY}${data.image}`
-                          : ""
-                      }
-                      alt="movie"
-                      className={styles.header__profile__img}
-                      onClick={profile}
-                    />
-                  </div>
-                ) : (
-                  <img src="/img/Ellipse 11.png" alt="" onClick={profile} />
-                )}
+                {/* {wasLogin ? ( */}
+                <div className={styles.cont__header__profile__img}>
+                  <img
+                    src={
+                      data
+                        ? `${process.env.REACT_APP_CLOUDINARY}${data.image}`
+                        : "/img/Ellipse 11.png"
+                    }
+                    alt="movie"
+                    className={styles.header__profile__img}
+                    onClick={profile}
+                  />
+                </div>
+                {/* ) : ( */}
+                {/* <img src="/img/Ellipse 11.png" alt="" onClick={profile} /> */}
+                {/* )} */}
               </div>
-              <div
+              {/* <div
                 class="dropdown-menu"
                 aria-labelledby="navbarDropdownMenuLink"
               >
@@ -178,7 +169,7 @@ export default function Header() {
                 <a class="dropdown-item" href="#">
                   Log Out
                 </a>
-              </div>
+              </div> */}
             </>
           ) : (
             <>

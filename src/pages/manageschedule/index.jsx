@@ -1,50 +1,43 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import CardDown from "../../components/CardDown/CardDown";
 import Pagination from "react-paginate";
 import { useSelector, useDispatch } from "react-redux";
-import { getDataMovie } from "../../stores/actions/movieviewall";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from "../../utils/axios";
 import CardSchedule from "../../components/CardSchedule/CardSchedule";
 
-function Home() {
-  document.title = "Manage Movie";
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [dataRelease, setDataRelease] = useState("");
+function ManageSchedule() {
+  document.title = "Manage Schedule";
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("name");
+  const limit = 9;
+  const [dataMovie, setdataMovie] = useState([]);
   const [movieId, setMovieId] = useState("");
   const [location, setLocation] = useState("");
-  const limit = 8;
-  const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const isPageManageSchedule = true;
-  const [searchOnChange, setSearchOnChange] = useState("");
   const [form, setForm] = useState({
-    Movie: "",
-    Price: "",
-    Premiere: "",
-    Location: "",
-    Time: "",
-    DateStart: "",
-    DateEnd: "",
-    image: null,
+    movieId: "",
+    premiere: "",
+    price: "",
+    location: "",
+    dateStart: "",
+    dateEnd: "",
+    time: [],
   });
   const [image, setImage] = useState(null);
   const [idMovie, setIdMovie] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
-  const isPageManageMovie = true;
-
-  const movie = useSelector((state) => state.movie);
-
-  const dataUser = localStorage.getItem("dataUser");
+  const [clickTime, setClickTime] = useState(false);
+  const [time, setTime] = useState([]);
 
   useEffect(() => {
     getdataSchedule();
+  }, [page, sort, movieId, location]);
+
+  useEffect(() => {
     getdataMovie();
   }, []);
 
@@ -53,59 +46,67 @@ function Home() {
       const result = await axios.get(
         `/schedule?page=${page}&limit=${limit}&searchMovieId=${movieId}&searchLocation=${location}&sort=${sort}`
       );
-      setData(result.data.data);
+
+      console.log(result.data);
+      setData(result.data);
     } catch (error) {
       console.log(error.response);
+      setData([]);
     }
   };
   const getdataMovie = async () => {
     try {
-      console.log("jalan");
-      await dispatch(getDataMovie(page, limit, sort, dataRelease, search));
+      let totalData = await axios.get("/movie");
+      totalData = totalData.data.pagination.totalData;
+      let resultMovie = await axios.get(`/movie?limit=${totalData}`);
+      resultMovie = resultMovie.data.data.map((item) => {
+        return { name: item.name, id: item.id, image: item.image };
+      });
+      setdataMovie(resultMovie);
     } catch (error) {
       console.log(error.response);
     }
   };
 
-  const handleChangeForm = (event) => {
-    const { name, value, files } = event.target;
-    if (name === "image") {
-      setForm({ ...form, [name]: files[0] });
-      setImage(URL.createObjectURL(files[0]));
-    } else {
-      setForm({ ...form, [name]: value });
+  const handleChangeForm = async (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    // console.log(name, value, "name value");
+    await setForm({ ...form, [name]: value });
+    // console.log(form, "form");
+    if (name == "movieId" && !image) {
+      const data = dataMovie.find((i) => {
+        return i.id == value;
+      });
+      setImage(data.image);
     }
   };
+
+  const handleClickTime = () => {
+    setClickTime(true);
+  };
+
+  const handleChangeTime = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    console.log(name, value, "name value");
+    console.log(e.key);
+    if (e.key === "Enter") {
+      console.log(value, "value");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    console.log(form, "form");
     const formData = new FormData();
     for (const data in form) {
       formData.append(data, form[data]);
     }
-    for (const data of formData.entries()) {
-      console.log(data[0] + ", " + data[1]);
-      // name, "Bagus"
-    }
-    // dispatch(postMovie(formData));
-    // dispatch(getDataMovie(page, limit));
     setImage(null);
   };
   const setUpdate = async (data) => {
     console.log(data);
-    // const data = await axios.get(`/movie/${id}`);
-    // "id": "eabe018e-cf54-4991-98fb-48674e0ea825",
-    // "name": "Antlers",
-    // "category": "Drama, Horror, Mystery",
-    // "image": "pesanfilm/imageMovie/tqpehnc866lzwngwlurc.jpeg",
-    // "releaseDate": "2022-01-22T00:00:00.000Z",
-    // "casts": "Keri Russell, Jesse Plemons, Jeremy T. Thomas",
-    // "director": "Scott Cooper",
-    // "duration": "1h 39m",
-    // "synopsis": "ANTLERS adalah karya terbaru dari sutradara visioner terkenal Scott Cooper dan maestro horor Guillermo del Toro. Di sebuah kota terpencil di Oregon, seorang guru sekolah menengah (Keri Russell) dan saudara lelakinya yang juga sheriff (Jesse Plemons) menjadi terlibat dalam kehidupan salah satu muridnya yang misterius (Jeremy T. Thomas) dengan rahasia gelap yang akan membawa mereka pada perjumpaan dengan sosok makhluk leluhur legendaris yang menakutkan.",
-    // "createdAt": "2022-04-26T08:20:57.000Z",
-    // "updatedAt": null
-    // console.log(data);
     setForm({
       ...form,
       movieName: data.name,
@@ -122,16 +123,14 @@ function Home() {
     setIsUpdate(true);
   };
   const handleDelete = (id) => {
-    // dispatch(deleteMovie(id));
-    // dispatch(getDataSchedule(page, limit));
     resetForm();
     console.log(id);
   };
   const resetForm = () => {
-    setForm.name("");
-    setForm.category("");
-    setForm.synopsis("");
-    setForm.image("");
+    // setForm.name("");
+    // setForm.category("");
+    // setForm.synopsis("");
+    // setForm.image("");
   };
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -141,9 +140,6 @@ function Home() {
       formData.append(data, form[data]);
     }
     formData.append("name", form.name);
-    // axios.patch("...", formData)
-    // dispatch(updateMovie(idMovie, formData));
-    // dispatch(getDataSchedule(page, limit));
     setIsUpdate(false);
   };
   const handlePagination = (data) => {
@@ -152,10 +148,11 @@ function Home() {
   const handleSort = (e) => {
     setSort(e.target.value);
   };
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      setSearch(e.target.value);
-    }
+  const handleLocation = (e) => {
+    setLocation(e.target.value);
+  };
+  const handleSortMovie = (e) => {
+    setMovieId(e.target.value);
   };
 
   return (
@@ -164,7 +161,7 @@ function Home() {
       <main className={`${styles.main} ${styles.addition__main}`}>
         <div className={styles.main__title}>
           <div className={styles.main__title__p1}>
-            <p>List Movie</p>
+            <p>Form Schedule</p>
           </div>
         </div>
         <div className={styles.main__form}>
@@ -173,152 +170,242 @@ function Home() {
               <div
                 className={`${styles.main__form__up__left}${styles.main__img}`}
               >
-                <div className={styles.main__img__img}>
+                <div
+                  className={styles.main__img__img}
+                  // onClick={handleClickUpdateImage}
+                >
                   <img
                     src={
-                      form.image
-                        ? `${process.env.REACT_APP_CLOUDINARY}${form.image}`
+                      image
+                        ? `${process.env.REACT_APP_CLOUDINARY}${image}`
                         : "https://www.a1hosting.net/wp-content/themes/arkahost/assets/images/default.jpg"
                     }
                     alt="movie"
                   />
+                  {/* <input
+                    type="file"
+                    accept=".jpg, .png, .jpeg"
+                    ref={hiddenFileInput}
+                    name="image"
+                    onChange={handleChangeForm}
+                    style={{ display: "none" }}
+                  /> */}
                 </div>
               </div>
               <div className={styles.main__form__up__middle}>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form__control}`}>
                   <label for="movieName" className={`form-label`}>
                     Movie
                   </label>
-                  <input
-                    type="text"
-                    value={form.movieName}
-                    onChange={handleChangeForm}
-                    // onChange={handleChangeForm}
-                    // value={movieName}
-                    className={`form-control ${styles.form__control}`}
+                  <br />
+                  <select
+                    name="movieId"
                     id="movieName"
-                    placeholder="Movie Name"
-                    required
-                  />
+                    onChange={handleChangeForm}
+                    className={styles.option}
+                  >
+                    <option value="name ASC"></option>
+                    {dataMovie.map((item) => {
+                      return (
+                        <>
+                          <option value={item.id} key={item.name}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </select>
                 </div>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form__control}`}>
                   <label for="director" className={`form-label`}>
                     Price
                   </label>
                   <input
-                    type="text"
-                    name="text"
+                    type="number"
+                    inputmode="numeric"
+                    name="price"
                     onChange={handleChangeForm}
-                    // onChange={handleChangeForm}
                     value={form.director}
-                    className={`form-control ${styles.form__control}`}
+                    className={`form-control ${styles.number}`}
                     id="director"
-                    placeholder="Director"
+                    placeholder="Price"
                     required
                   />
                 </div>
-                <div className={`mb-3`}>
-                  <label for="releaseDate" className={`form-label`}>
+                <div className={`mb-3 ${styles.form__control}`}>
+                  <label for="premiere" className={`form-label`}>
                     Premiere
                   </label>
-                  <input
-                    type="text"
-                    name="text"
-                    onChange={handleChangeForm}
-                    // onChange={handleChangeForm}
-                    value={form.releaseDate}
-                    className={`form-control ${styles.form__control}`}
-                    id="releaseDate"
-                    placeholder="Release Date"
-                    required
-                  />
+                  <br />
+
+                  <label for="myCheckbox" className={styles.label__radio}>
+                    <input
+                      type="radio"
+                      name="premiere"
+                      onChange={handleChangeForm}
+                      value="Ebv.Id"
+                      id="myCheckbox"
+                      className={styles.input__radio}
+                    />
+                    <div
+                      className={
+                        form.premiere == "Ebv.Id"
+                          ? `${styles.container__radio} ${styles.container__radio__active}`
+                          : `${styles.container__radio}`
+                      }
+                    >
+                      <img
+                        src="/img/home/Vector.png"
+                        alt=""
+                        className={styles.radio__img}
+                      />
+                    </div>
+                  </label>
+
+                  <label for="myCheckbox1" className={styles.label__radio}>
+                    <input
+                      type="radio"
+                      name="premiere"
+                      onChange={handleChangeForm}
+                      value="CineOne21"
+                      id="myCheckbox1"
+                      className={styles.input__radio}
+                    />
+                    <div
+                      className={
+                        form.premiere == "CineOne21"
+                          ? `${styles.container__radio} ${styles.container__radio__active}`
+                          : `${styles.container__radio}`
+                      }
+                    >
+                      <img
+                        src="/img/home/Vector-1.png"
+                        alt=""
+                        className={styles.radio__img}
+                      />
+                    </div>
+                  </label>
+
+                  <label for="myCheckbox2">
+                    <input
+                      type="radio"
+                      name="premiere"
+                      onChange={handleChangeForm}
+                      value="Hiflix"
+                      id="myCheckbox2"
+                      className={styles.input__radio}
+                    />
+                    <div
+                      className={
+                        form.premiere == "Hiflix"
+                          ? `${styles.container__radio} ${styles.container__radio__active}`
+                          : `${styles.container__radio}`
+                      }
+                    >
+                      <img
+                        src="/img/home/Vector-2.png"
+                        alt=""
+                        className={styles.radio__img}
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
               <div className={styles.main__form__up__right}>
-                <div className={`mb-3`}>
+                <div className={`mb-3 ${styles.form__control}`}>
                   <label for="category" className={`form-label`}>
                     Location
                   </label>
-                  <input
-                    type="text"
-                    name="text"
+                  <select
+                    name="location"
+                    id=""
                     onChange={handleChangeForm}
-                    // onChange={handleChangeForm}
-                    value={form.category}
-                    className={`form-control ${styles.form__control}`}
-                    id="category"
-                    placeholder="Category"
-                    required
-                  />
+                    className={styles.option}
+                  >
+                    <option value=""></option>
+                    <option value="Whatever street No.12, Bogor">Bogor</option>
+                    <option value="Whatever street No.12, Depok">Depok</option>
+                    <option value="Whatever street No.12, Bandung">
+                      Bandung
+                    </option>
+                  </select>
                 </div>
-                <div className={`mb-3`}>
-                  <label for="cast" className={`form-label`}>
-                    Time
-                  </label>
-                  <input
-                    type="text"
-                    name="text"
-                    onChange={handleChangeForm}
-                    // onChange={handleChangeForm}
-                    value={form.casts}
-                    className={`form-control ${styles.form__control}`}
-                    id="cast"
-                    placeholder="Cast"
-                    required
-                  />
-                </div>
-                <div className={styles.main__duration}>
-                  <div className={`mb-3`}>
+                <div className={`${styles.main__duration}`}>
+                  <div className={`mb-3 ${styles.form__control}`}>
                     <label for="durationHour" className={`form-label`}>
                       Date Start
                     </label>
                     <input
-                      type="text"
-                      name="text"
+                      type="date"
+                      name="dateStart"
                       onChange={handleChangeForm}
-                      // onChange={handleChangeForm}
-                      value={form.durationHour}
-                      className={`form-control ${styles.form__control}`}
-                      id="durati0nHour"
-                      placeholder="Duration Hour"
+                      value={form.dateStart}
+                      className={`form-control`}
+                      id="durationHour"
                       required
                     />
                   </div>
-                  <div className={`mb-3`}>
+                  <div className={`mb-3 ${styles.form__control}`}>
                     <label for="durationMinute" className={`form-label`}>
                       Date End
                     </label>
                     <input
-                      type="text"
-                      name="text"
+                      type="date"
+                      name="dateEnd"
                       onChange={handleChangeForm}
-                      // onChange={handleChangeForm}
-                      value={form.durationMinute}
-                      className={`form-control ${styles.form__control}`}
+                      value={form.dateEnd}
+                      className={`form-control`}
                       id="durationMinute"
-                      placeholder="Duration Minute"
+                      min={form.dateStart}
                       required
                     />
                   </div>
                 </div>
+                <div className={`mb-3 ${styles.form__control}`}>
+                  <label for="cast" className={`form-label`}>
+                    Time
+                  </label>
+                  <div className={styles.container__time}>
+                    <div
+                      className={
+                        clickTime
+                          ? `${styles.container__plus} ${styles.container__plus__none}`
+                          : styles.container__plus
+                      }
+                      onClick={handleClickTime}
+                    >
+                      <img
+                        src="/img/bi_plus.png"
+                        alt=""
+                        className={styles.container__plus__img}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="time"
+                      onKeyUp={handleChangeTime}
+                      value={form.casts}
+                      className={
+                        clickTime
+                          ? `form-control ${styles.time} `
+                          : ` form-control ${styles.time} ${styles.time__none}`
+                      }
+                      id="cast"
+                      placeholder="08:00"
+                      required
+                    />
+                    {time.map((item) => {
+                      return (
+                        <>
+                          {" "}
+                          <div className={styles.time__list}>{item}</div>
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
-            {/* <div
-              className={`${styles.main__form__middle} ${styles.main__synopsis}`}
-            >
-              <label for="synopsis" className={`form-label`}>
-                Synopsis
-              </label>
-              <input
-                type="text-area"
-                id="synopsis"
-                className={`form-control ${styles.form__control}`}
-                placeholder="Synopsis"
-                // onChange={handleChangeForm}
-                value={form.synopsis}
-                onChange={handleChangeForm}
-              />
-            </div> */}
             <div className={styles.main__form__down}>
               <button onClick={resetForm}>reset</button>
               <button type="submit">{isUpdate ? "Update" : "Submit"}</button>
@@ -329,9 +416,7 @@ function Home() {
       <main className={`${styles.main1} ${styles.addition__main1}`}>
         <div className={styles.main1__title}>
           <div className={styles.main__title__p1}>
-            <p>
-              <a href=""> List Movie</a>
-            </p>
+            <p>List Schedule</p>
           </div>
           <div className={styles.main1__title__right}>
             <select name="sort" id="" onChange={handleSort}>
@@ -340,32 +425,41 @@ function Home() {
               <option value="name DESC">Name z-a</option>
               <option value="releaseDate">Release Date</option>
             </select>
-            <div
-              className={`input-group ${styles.main1__title__right__search}`}
+            <select name="location" id="" onChange={handleLocation}>
+              <option value="">Location</option>
+              <option value="Bandung">Bandung</option>
+              <option value="Bogor">Bogor</option>
+              <option value="Depok">Depok</option>
+            </select>
+            <select
+              name="movieId"
+              id=""
+              onChange={handleSortMovie}
+              className={styles.option}
             >
-              <div className="form-outline">
-                <input
-                  type="search"
-                  id="form1"
-                  className="form-control"
-                  onKeyPress={handleSearch}
-                  placeholder="Search Movie Name"
-                />
-                {/* <label className="form-label" for="form1"></label> */}
-              </div>
-            </div>
+              <option value=""></option>
+              {dataMovie.map((item) => {
+                return (
+                  <>
+                    <option value={item.id} key={item.name}>
+                      {item.name}
+                    </option>
+                  </>
+                );
+              })}
+            </select>
           </div>
         </div>
         <div className={styles.main1__img__container}>
           <ul>
-            {movie.isLoading ? (
+            {!data.data ? (
               <div className="spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>
             ) : (
-              <div className="row">
-                {data.map((item) => (
-                  <div className="col-md-3">
+              <div className={`row  ${styles.container__card}`}>
+                {data.data.map((item) => (
+                  <div className={`col-md-3 ${styles.container__card__1}`}>
                     <li key={item.id}>
                       <CardSchedule
                         data={item}
@@ -383,7 +477,7 @@ function Home() {
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}
-            pageCount={movie.pageInfo.totalPage}
+            pageCount={data?.pagination?.totalPage || 1}
             onPageChange={handlePagination}
             containerClassName={"pagination"}
             subContainerClassName={"pages pagination"}
@@ -396,4 +490,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default ManageSchedule;

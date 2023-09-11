@@ -5,8 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 export default function PrivateRoute(props) {
   const location = useLocation();
   const token = localStorage.getItem("token");
-  const user = useSelector((state) => state.user);
-  console.log(user);
   let dataUser = localStorage.getItem("dataUser");
   dataUser = JSON.parse(dataUser);
   if (!token) {
